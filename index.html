@@ -54,27 +54,66 @@
       overflow-x: hidden;
     }
 
+    /* Particle canvas */
+    #particleCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Reading progress bar */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--green), var(--green-bright), var(--gold));
+      z-index: 9999;
+      transition: width 0.1s linear;
+      box-shadow: 0 0 10px var(--green-glow), 0 0 20px rgba(16, 185, 129, 0.15);
+    }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 clamp(1.5rem, 5vw, 4rem);
+      position: relative;
+      z-index: 2;
     }
 
     .section-padding {
       padding: clamp(4rem, 10vh, 8rem) 0;
     }
 
-    /* Grid overlay */
+    /* Grid overlay — subtle scanlines */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       background-image:
-        linear-gradient(rgba(16, 185, 129, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(16, 185, 129, 0.02) 1px, transparent 1px);
+        linear-gradient(rgba(16, 185, 129, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.015) 1px, transparent 1px);
       background-size: 60px 60px;
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
+    }
+
+    /* Scanline effect */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(16, 185, 129, 0.008) 2px,
+        rgba(16, 185, 129, 0.008) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
     }
 
     /* ======= HERO ======= */
@@ -85,6 +124,7 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      z-index: 2;
     }
 
     .hero-fallback {
@@ -110,7 +150,6 @@
       background: radial-gradient(circle, var(--green-glow), transparent 70%);
       top: 10%;
       left: -10%;
-      animation: float-orb 12s ease-in-out infinite;
     }
 
     .hero-orb--2 {
@@ -119,7 +158,6 @@
       background: radial-gradient(circle, var(--gold-dim), transparent 70%);
       bottom: 10%;
       right: -5%;
-      animation: float-orb 15s ease-in-out infinite reverse;
     }
 
     .hero-orb--3 {
@@ -128,13 +166,6 @@
       background: radial-gradient(circle, rgba(16, 185, 129, 0.15), transparent 70%);
       top: 60%;
       left: 40%;
-      animation: float-orb 10s ease-in-out infinite 3s;
-    }
-
-    @keyframes float-orb {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(30px, -20px) scale(1.05); }
-      66% { transform: translate(-20px, 15px) scale(0.95); }
     }
 
     .hero-content {
@@ -145,15 +176,36 @@
       padding: 0 2rem;
     }
 
-    .hero-eyebrow {
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.2em;
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.25rem;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--green);
-      margin-bottom: 1.5rem;
-      opacity: 1;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse-dot 2s ease-in-out infinite;
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green); }
+      50% { opacity: 0.4; box-shadow: 0 0 2px var(--green); }
     }
 
     .hero-headline {
@@ -163,12 +215,12 @@
       line-height: 1.15;
       margin-bottom: 1.5rem;
       color: var(--text);
-      opacity: 1;
     }
 
     .hero-headline em {
       font-style: normal;
       color: var(--green);
+      text-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
     }
 
     .hero-sub {
@@ -177,7 +229,6 @@
       max-width: 600px;
       margin: 0 auto 2.5rem;
       line-height: 1.7;
-      opacity: 1;
     }
 
     .hero-cta {
@@ -193,12 +244,27 @@
       text-decoration: none;
       transition: transform 0.3s, box-shadow 0.3s;
       box-shadow: 0 0 30px var(--green-glow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-cta::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, var(--green-bright), var(--green), var(--gold));
+      border-radius: inherit;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.4s;
     }
 
     .hero-cta:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 50px var(--green-glow);
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 0 50px var(--green-glow), 0 10px 40px rgba(0,0,0,0.3);
     }
+
+    .hero-cta:hover::before { opacity: 1; }
 
     .hero-cta svg {
       width: 20px;
@@ -235,6 +301,50 @@
       50% { opacity: 0.4; transform: scaleY(0.6); }
     }
 
+    /* ======= FLOATING NAV ======= */
+    .float-nav {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s, transform 0.4s;
+      pointer-events: none;
+    }
+
+    .float-nav.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    .float-nav a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--green);
+      color: var(--dark);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.85rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 0 30px var(--green-glow), 0 8px 32px rgba(0,0,0,0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .float-nav a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 50px var(--green-glow), 0 12px 40px rgba(0,0,0,0.5);
+    }
+
+    .float-nav svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
     /* ======= SECTIONS COMMON ======= */
     .section-label {
       font-size: 0.75rem;
@@ -243,6 +353,7 @@
       text-transform: uppercase;
       color: var(--green);
       margin-bottom: 1rem;
+      text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
     }
 
     .section-title {
@@ -262,7 +373,7 @@
     }
 
     /* ======= PROBLEM ======= */
-    #problem { position: relative; }
+    #problem { position: relative; z-index: 2; }
 
     .problem-grid {
       display: grid;
@@ -275,24 +386,43 @@
     }
 
     .problem-card {
-      background: var(--dark-card);
+      background: rgba(10, 20, 10, 0.6);
       border: 1px solid var(--dark-card-border);
       border-radius: 16px;
       padding: 2rem;
-      transition: border-color 0.3s, transform 0.3s;
-      opacity: 1;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .problem-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(197, 165, 90, 0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
     }
 
     .problem-card:hover {
       border-color: rgba(197, 165, 90, 0.4);
-      transform: translateY(-4px);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(197, 165, 90, 0.05);
     }
 
+    .problem-card:hover::before { opacity: 1; }
+
     .problem-icon {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 1rem;
+      width: 44px;
+      height: 44px;
+      margin-bottom: 1.25rem;
       color: var(--gold);
+      filter: drop-shadow(0 0 8px rgba(197, 165, 90, 0.3));
     }
 
     .problem-icon svg {
@@ -304,7 +434,7 @@
     }
 
     .problem-title {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
@@ -316,7 +446,7 @@
     }
 
     /* ======= SOLUTION ======= */
-    #solution { position: relative; }
+    #solution { position: relative; z-index: 2; }
 
     .solution-grid {
       display: grid;
@@ -329,26 +459,43 @@
     }
 
     .solution-card {
-      background: var(--dark-card);
+      background: rgba(10, 20, 10, 0.6);
       border: 1px solid var(--dark-card-border);
       border-radius: 16px;
       padding: 2rem;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      opacity: 1;
-      transition: border-color 0.3s, transform 0.3s;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .solution-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.4), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
     }
 
     .solution-card:hover {
       border-color: var(--green);
-      transform: translateY(-4px);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px var(--green-glow);
     }
 
+    .solution-card:hover::before { opacity: 1; }
+
     .solution-icon {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 1rem;
+      width: 44px;
+      height: 44px;
+      margin-bottom: 1.25rem;
       color: var(--green);
+      filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3));
     }
 
     .solution-icon svg {
@@ -360,7 +507,7 @@
     }
 
     .solution-title {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
@@ -372,7 +519,7 @@
     }
 
     /* ======= HOW IT WORKS ======= */
-    #how { position: relative; }
+    #how { position: relative; z-index: 2; }
 
     .how-header {
       text-align: center;
@@ -386,18 +533,52 @@
       position: relative;
     }
 
+    /* Connection line between steps */
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--green-glow), var(--green), var(--green-glow), transparent);
+      z-index: 0;
+    }
+
     @media (max-width: 768px) {
-      .steps-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+      .steps-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .steps-grid::before {
+        top: 10%;
+        bottom: 10%;
+        left: 50%;
+        right: auto;
+        width: 1px;
+        height: auto;
+        background: linear-gradient(180deg, transparent, var(--green-glow), var(--green), var(--green-glow), transparent);
+      }
     }
 
     .step-card {
-      background: var(--dark-card);
+      background: rgba(10, 20, 10, 0.7);
       border: 1px solid var(--dark-card-border);
       border-radius: 16px;
       padding: 2rem 1.5rem;
       text-align: center;
       position: relative;
-      opacity: 1;
+      z-index: 1;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+    }
+
+    .step-card:hover {
+      border-color: rgba(16, 185, 129, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
     }
 
     .step-number {
@@ -408,6 +589,7 @@
       opacity: 0.3;
       line-height: 1;
       margin-bottom: 1rem;
+      text-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
     }
 
     .step-title {
@@ -424,14 +606,20 @@
 
     .step-note {
       text-align: center;
-      margin-top: 2rem;
+      margin-top: 2.5rem;
       font-size: 0.9rem;
       color: var(--text-dim);
       font-style: italic;
+      padding: 1.5rem;
+      background: rgba(16, 185, 129, 0.03);
+      border: 1px solid rgba(16, 185, 129, 0.08);
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     /* ======= DEMO ======= */
-    #demo { position: relative; }
+    #demo { position: relative; z-index: 2; }
 
     .demo-terminal {
       background: #0d1117;
@@ -440,7 +628,17 @@
       max-width: 800px;
       margin: 0 auto;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(16, 185, 129, 0.05);
+      position: relative;
+    }
+
+    .demo-terminal::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 17px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), transparent 40%, transparent 60%, rgba(197, 165, 90, 0.1));
+      z-index: -1;
     }
 
     .demo-terminal-bar {
@@ -466,6 +664,7 @@
       font-size: 0.7rem;
       color: var(--text-dim);
       margin-left: 0.5rem;
+      font-family: var(--font-mono);
     }
 
     .demo-terminal-body {
@@ -501,6 +700,7 @@
       animation: blink-cursor 1s step-end infinite;
       vertical-align: text-bottom;
       margin-left: 2px;
+      box-shadow: 0 0 6px var(--green);
     }
 
     @keyframes blink-cursor {
@@ -516,24 +716,27 @@
     }
 
     .demo-btn {
-      background: var(--dark-card);
+      background: rgba(10, 20, 10, 0.6);
       border: 1px solid var(--dark-card-border);
       color: var(--text-dim);
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 1.25rem;
       border-radius: 8px;
       font-size: 0.75rem;
       font-family: var(--font-body);
       cursor: pointer;
-      transition: border-color 0.3s, color 0.3s;
+      transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .demo-btn:hover, .demo-btn.active {
       border-color: var(--green);
       color: var(--green);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
     }
 
     /* ======= FAQ ======= */
-    #faq { position: relative; }
+    #faq { position: relative; z-index: 2; }
 
     .faq-header {
       text-align: center;
@@ -549,16 +752,18 @@
     }
 
     .faq-item {
-      background: var(--dark-card);
+      background: rgba(10, 20, 10, 0.6);
       border: 1px solid var(--dark-card-border);
       border-radius: 12px;
       overflow: hidden;
-      transition: border-color 0.3s;
-      opacity: 1;
+      transition: border-color 0.4s, box-shadow 0.4s;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .faq-item:hover {
       border-color: rgba(16, 185, 129, 0.3);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.05);
     }
 
     .faq-question {
@@ -584,6 +789,7 @@
       color: var(--green);
       flex-shrink: 0;
       transition: transform 0.3s;
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
     }
 
     .faq-item.open .faq-question::after {
@@ -607,6 +813,7 @@
     #cta {
       position: relative;
       text-align: center;
+      z-index: 2;
     }
 
     .cta-content {
@@ -636,30 +843,32 @@
       gap: 0.75rem;
       background: var(--green);
       color: var(--dark);
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      padding: 1rem 2.5rem;
+      padding: 1.15rem 3rem;
       border-radius: 60px;
       text-decoration: none;
       transition: transform 0.3s, box-shadow 0.3s;
       box-shadow: 0 0 30px var(--green-glow);
+      position: relative;
+      overflow: hidden;
     }
 
     .cta-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 50px var(--green-glow);
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 0 60px var(--green-glow), 0 10px 40px rgba(0,0,0,0.3);
     }
 
     .cta-button svg {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       fill: currentColor;
     }
 
     .cta-orb {
       position: absolute;
-      width: 400px;
-      height: 400px;
+      width: 500px;
+      height: 500px;
       border-radius: 50%;
       background: radial-gradient(circle, var(--green-glow), transparent 70%);
       top: 50%;
@@ -670,11 +879,43 @@
       z-index: 0;
     }
 
+    /* Trust bar */
+    .trust-bar {
+      display: flex;
+      justify-content: center;
+      gap: clamp(2rem, 5vw, 4rem);
+      margin-top: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .trust-item {
+      text-align: center;
+    }
+
+    .trust-number {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1;
+      text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .trust-label {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.35rem;
+    }
+
     /* ======= FOOTER ======= */
     footer {
       padding: 3rem 0;
       text-align: center;
       border-top: 1px solid rgba(255,255,255,0.05);
+      position: relative;
+      z-index: 2;
     }
 
     footer p {
@@ -682,14 +923,25 @@
       color: var(--text-dim);
     }
 
-    /* ======= ANIM ======= */
-    .anim-target { opacity: 1; }
-
-    /* ======= WHATSAPP ICON (reused) ======= */
-    .wa-icon { display: inline-block; }
+    /* ======= GSAP INITIAL STATES (no-JS fallback: visible) ======= */
+    .reveal { opacity: 1; }
   </style>
 </head>
 <body>
+
+  <!-- Reading progress -->
+  <div class="reading-progress" id="readingProgress"></div>
+
+  <!-- Particle canvas -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Floating WhatsApp button -->
+  <div class="float-nav" id="floatNav">
+    <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
 
   <!-- ====== HERO ====== -->
   <header id="hero">
@@ -699,10 +951,13 @@
     <div class="hero-orb hero-orb--3"></div>
 
     <div class="hero-content">
-      <p class="hero-eyebrow anim-target">Para advogados</p>
-      <h1 class="hero-headline anim-target">Pesquise, redija e revise<br>em <em>minutos, não horas.</em></h1>
-      <p class="hero-sub anim-target">O Authus pesquisa jurisprudência em 84 tribunais, monta petições completas e revisa tudo antes de entregar. Você foca nos seus clientes.</p>
-      <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus" target="_blank" class="hero-cta anim-target">
+      <div class="hero-badge reveal">
+        <span class="hero-badge-dot"></span>
+        Para advogados
+      </div>
+      <h1 class="hero-headline reveal">Pesquise, redija e revise<br>em <em>minutos, não horas.</em></h1>
+      <p class="hero-sub reveal">O Authus pesquisa jurisprudência em 84 tribunais, monta petições completas e revisa tudo antes de entregar. Você foca nos seus clientes.</p>
+      <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus" target="_blank" class="hero-cta reveal">
         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Quero conhecer o Authus
       </a>
@@ -718,33 +973,33 @@
     <section id="problem" class="section-padding">
       <div class="container">
         <div style="text-align: center; margin-bottom: 3rem;">
-          <p class="section-label anim-target">Você conhece essa rotina</p>
-          <h2 class="section-title anim-target" style="max-width: 650px; margin-left: auto; margin-right: auto;">O trabalho pesado que rouba suas horas</h2>
+          <p class="section-label reveal">Você conhece essa rotina</p>
+          <h2 class="section-title reveal" style="max-width: 650px; margin-left: auto; margin-right: auto;">O trabalho pesado que<br>rouba suas horas</h2>
         </div>
 
         <div class="problem-grid">
-          <div class="problem-card anim-target">
+          <div class="problem-card reveal">
             <div class="problem-icon">
               <svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             </div>
             <h4 class="problem-title">Pesquisa que nunca acaba</h4>
             <p class="problem-desc">Entrar em portal de tribunal, filtrar, ler ementas, anotar. Horas para achar os precedentes certos.</p>
           </div>
-          <div class="problem-card anim-target">
+          <div class="problem-card reveal">
             <div class="problem-icon">
               <svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
             </div>
             <h4 class="problem-title">Petição do zero, toda vez</h4>
             <p class="problem-desc">Mesmo tipo de ação, mesmo formato. Mas você reescreve cada peça como se fosse a primeira.</p>
           </div>
-          <div class="problem-card anim-target">
+          <div class="problem-card reveal">
             <div class="problem-icon">
               <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
             <h4 class="problem-title">Prazos apertados, sempre</h4>
             <p class="problem-desc">Contestação para quinta, réplica para sexta, recurso para segunda. E nenhum sistema que avise antes.</p>
           </div>
-          <div class="problem-card anim-target">
+          <div class="problem-card reveal">
             <div class="problem-icon">
               <svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             </div>
@@ -759,38 +1014,54 @@
     <section id="solution" class="section-padding">
       <div class="container">
         <div style="text-align: center; margin-bottom: 3rem;">
-          <p class="section-label anim-target">O que o Authus faz por você</p>
-          <h2 class="section-title anim-target" style="max-width: 700px; margin-left: auto; margin-right: auto;">Menos trabalho operacional.<br>Mais tempo para advogar.</h2>
+          <p class="section-label reveal">O que o Authus faz por você</p>
+          <h2 class="section-title reveal" style="max-width: 700px; margin-left: auto; margin-right: auto;">Menos trabalho operacional.<br>Mais tempo para advogar.</h2>
         </div>
 
         <div class="solution-grid">
-          <div class="solution-card anim-target">
+          <div class="solution-card reveal">
             <div class="solution-icon">
               <svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             </div>
             <h4 class="solution-title">Pesquisa jurisprudência em segundos</h4>
             <p class="solution-desc">Busca em 84 tribunais brasileiros. Encontra os precedentes mais relevantes para o seu caso e entrega tudo organizado.</p>
           </div>
-          <div class="solution-card anim-target">
+          <div class="solution-card reveal">
             <div class="solution-icon">
               <svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
             </div>
             <h4 class="solution-title">Monta petições completas em minutos</h4>
             <p class="solution-desc">Contestação, inicial, recurso, mandado de segurança. No formato certo, com fundamentação vinculada aos precedentes que encontrou.</p>
           </div>
-          <div class="solution-card anim-target">
+          <div class="solution-card reveal">
             <div class="solution-icon">
               <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
             </div>
             <h4 class="solution-title">Revisa sua peça antes de protocolar</h4>
             <p class="solution-desc">Confere fundamentação, prazos, formatação e consistência em 32 pontos. Aponta o que precisa corrigir antes de ir para o tribunal.</p>
           </div>
-          <div class="solution-card anim-target">
+          <div class="solution-card reveal">
             <div class="solution-icon">
               <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
             </div>
             <h4 class="solution-title">Gera relatório para o seu cliente</h4>
             <p class="solution-desc">Explica a situação do caso em linguagem simples. Sem juridiquês. Seu cliente entende o que está acontecendo.</p>
+          </div>
+        </div>
+
+        <!-- Trust bar -->
+        <div class="trust-bar reveal">
+          <div class="trust-item">
+            <div class="trust-number" data-count="84">0</div>
+            <div class="trust-label">tribunais</div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-number" data-count="12">0</div>
+            <div class="trust-label">agentes de IA</div>
+          </div>
+          <div class="trust-item">
+            <div class="trust-number" data-count="32">0</div>
+            <div class="trust-label">pontos de revisão</div>
           </div>
         </div>
       </div>
@@ -800,29 +1071,29 @@
     <section id="how" class="section-padding">
       <div class="container">
         <div class="how-header">
-          <p class="section-label anim-target">Como funciona</p>
-          <h2 class="section-title anim-target">Três passos. Simples assim.</h2>
+          <p class="section-label reveal">Como funciona</p>
+          <h2 class="section-title reveal">Três passos. Simples assim.</h2>
         </div>
 
         <div class="steps-grid">
-          <div class="step-card anim-target">
+          <div class="step-card reveal">
             <p class="step-number">01</p>
             <h4 class="step-title">Descreva o caso</h4>
             <p class="step-desc">Conte o que aconteceu, como se estivesse explicando para um colega. Sem formulário, sem campo obrigatório.</p>
           </div>
-          <div class="step-card anim-target">
+          <div class="step-card reveal">
             <p class="step-number">02</p>
             <h4 class="step-title">O Authus trabalha</h4>
             <p class="step-desc">Pesquisa precedentes, monta a tese, redige a petição e revisa tudo. Em minutos, não dias.</p>
           </div>
-          <div class="step-card anim-target">
+          <div class="step-card reveal">
             <p class="step-number">03</p>
             <h4 class="step-title">Você revisa e protocola</h4>
             <p class="step-desc">A decisão final é sempre sua. Você lê, ajusta o que quiser e protocola quando estiver satisfeito.</p>
           </div>
         </div>
 
-        <p class="step-note anim-target">O Authus não substitui o advogado. Ele tira de você o trabalho pesado para que você foque no que importa.</p>
+        <p class="step-note reveal">O Authus não substitui o advogado. Ele tira de você o trabalho pesado para que você foque no que importa.</p>
       </div>
     </section>
 
@@ -830,16 +1101,16 @@
     <section id="demo" class="section-padding">
       <div class="container">
         <div style="text-align: center; margin-bottom: 3rem;">
-          <p class="section-label anim-target">Veja em ação</p>
-          <h2 class="section-title anim-target" style="max-width: 600px; margin-left: auto; margin-right: auto;">O que você vê quando<br>usa o Authus</h2>
+          <p class="section-label reveal">Veja em ação</p>
+          <h2 class="section-title reveal" style="max-width: 600px; margin-left: auto; margin-right: auto;">O que você vê quando<br>usa o Authus</h2>
         </div>
 
-        <div class="demo-terminal">
+        <div class="demo-terminal reveal">
           <div class="demo-terminal-bar">
             <div class="demo-terminal-dot demo-terminal-dot--red"></div>
             <div class="demo-terminal-dot demo-terminal-dot--yellow"></div>
             <div class="demo-terminal-dot demo-terminal-dot--green"></div>
-            <span class="demo-terminal-title">Authus</span>
+            <span class="demo-terminal-title">authus v1.0</span>
           </div>
           <div class="demo-terminal-body" id="demoBody">
             <div class="demo-prompt" id="demoPrompt"></div>
@@ -859,36 +1130,36 @@
     <section id="faq" class="section-padding">
       <div class="container">
         <div class="faq-header">
-          <p class="section-label anim-target">Perguntas frequentes</p>
-          <h2 class="section-title anim-target">Talvez você esteja pensando...</h2>
+          <p class="section-label reveal">Perguntas frequentes</p>
+          <h2 class="section-title reveal">Talvez você esteja pensando...</h2>
         </div>
 
         <div class="faq-list">
-          <div class="faq-item anim-target">
+          <div class="faq-item reveal">
             <button class="faq-question">Posso confiar numa petição gerada assim?</button>
             <div class="faq-answer">
               <p class="faq-answer-inner">O Authus revisa cada peça em 32 pontos antes de entregar: fundamentação, prazos, formatação, consistência. E a decisão final é sempre sua. Você lê, ajusta e protocola quando estiver satisfeito. Nada vai para o tribunal sem a sua aprovação.</p>
             </div>
           </div>
-          <div class="faq-item anim-target">
+          <div class="faq-item reveal">
             <button class="faq-question">Funciona para a minha área do direito?</button>
             <div class="faq-answer">
               <p class="faq-answer-inner">O Authus tem 12 especialistas internos: cível, penal, trabalhista, tributário, constitucional, LGPD, direito comercial, família e sucessões, e mais. Se a sua área existe no direito brasileiro, o Authus cobre.</p>
             </div>
           </div>
-          <div class="faq-item anim-target">
+          <div class="faq-item reveal">
             <button class="faq-question">Preciso entender de tecnologia para usar?</button>
             <div class="faq-answer">
               <p class="faq-answer-inner">Se você sabe mandar mensagem, sabe usar o Authus. Você descreve o caso com as suas palavras, e o Authus faz o resto. Nós cuidamos de toda a parte técnica: instalação, configuração e treinamento.</p>
             </div>
           </div>
-          <div class="faq-item anim-target">
+          <div class="faq-item reveal">
             <button class="faq-question">Quanto custa?</button>
             <div class="faq-answer">
               <p class="faq-answer-inner">A partir de R$197 por mês. O valor do setup depende do plano escolhido, e inclui instalação completa e treinamento. Na conversa pelo WhatsApp, explicamos os planos e encontramos o que faz sentido para o seu escritório.</p>
             </div>
           </div>
-          <div class="faq-item anim-target">
+          <div class="faq-item reveal">
             <button class="faq-question">Preciso instalar alguma coisa?</button>
             <div class="faq-answer">
               <p class="faq-answer-inner">Nós instalamos tudo para você. O setup completo fica com a nossa equipe: instalação, configuração dos especialistas para a sua área, e treinamento para você começar a usar no mesmo dia. Você não precisa fazer nada técnico.</p>
@@ -903,9 +1174,9 @@
       <div class="container" style="position: relative;">
         <div class="cta-orb"></div>
         <div class="cta-content">
-          <h2 class="cta-headline anim-target">Quer ver o Authus funcionando?</h2>
-          <p class="cta-sub anim-target">Manda uma mensagem. A gente mostra como funciona com um caso da sua área.</p>
-          <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus" target="_blank" class="cta-button">
+          <h2 class="cta-headline reveal">Quer ver o Authus funcionando?</h2>
+          <p class="cta-sub reveal">Manda uma mensagem. A gente mostra como funciona com um caso da sua área.</p>
+          <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus" target="_blank" class="cta-button reveal">
             <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             Conversar no WhatsApp
           </a>
@@ -924,210 +1195,366 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
   <script>
-    (function() {
-      'use strict';
+  (function() {
+    'use strict';
 
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReducedMotion) return;
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      gsap.registerPlugin(ScrollTrigger);
+    // ======= PARTICLE NETWORK =======
+    (function initParticles() {
+      var canvas = document.getElementById('particleCanvas');
+      var ctx = canvas.getContext('2d');
+      var particles = [];
+      var mouse = { x: -1000, y: -1000 };
+      var particleCount = window.innerWidth < 768 ? 35 : 70;
+      var connectionDistance = window.innerWidth < 768 ? 100 : 150;
 
-      // Hero entrance
-      const heroTl = gsap.timeline({ delay: 0.3 });
-      heroTl
-        .from('.hero-eyebrow', { opacity: 0, y: 20, duration: 0.8, ease: 'power3.out' })
-        .from('.hero-headline', { opacity: 0, y: 40, duration: 1, ease: 'power3.out' }, '-=0.5')
-        .from('.hero-sub', { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-        .from('.hero-cta', { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, '-=0.4')
-        .from('.hero-scroll-cue', { opacity: 0, duration: 0.6 }, '-=0.3');
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
 
-      // Scrub helper
-      function scrubSection(trigger, start, end, buildFn) {
-        const tl = gsap.timeline({
-          scrollTrigger: { trigger: trigger, start: start, end: end, scrub: 0.8 }
+      document.addEventListener('mousemove', function(e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      for (var i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          r: Math.random() * 2 + 0.5,
+          o: Math.random() * 0.4 + 0.1
         });
-        buildFn(tl);
       }
 
-      // Problem section
-      scrubSection('#problem', 'top 90%', 'top 15%', function(tl) {
-        tl.from('#problem .section-label', { opacity: 0, y: 30 }, 0)
-          .from('#problem .section-title', { opacity: 0, y: 40 }, 0.05)
-          .from('.problem-card', { opacity: 0, y: 50, stagger: 0.06 }, 0.15);
-      });
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Solution section
-      scrubSection('#solution', 'top 90%', 'top 15%', function(tl) {
-        tl.from('#solution .section-label', { opacity: 0, y: 30 }, 0)
-          .from('#solution .section-title', { opacity: 0, y: 40 }, 0.05)
-          .from('.solution-card', { opacity: 0, y: 50, stagger: 0.06 }, 0.15);
-      });
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
 
-      // How it works
-      scrubSection('#how', 'top 90%', 'top 20%', function(tl) {
-        tl.from('.how-header .section-label', { opacity: 0, y: 30 }, 0)
-          .from('.how-header .section-title', { opacity: 0, y: 40 }, 0.05)
-          .from('.step-card', { opacity: 0, y: 50, stagger: 0.08 }, 0.1)
-          .from('.step-note', { opacity: 0, y: 20 }, 0.35);
-      });
+          if (p.x < 0) p.x = canvas.width;
+          if (p.x > canvas.width) p.x = 0;
+          if (p.y < 0) p.y = canvas.height;
+          if (p.y > canvas.height) p.y = 0;
 
-      // Demo section
-      scrubSection('#demo', 'top 90%', 'top 40%', function(tl) {
-        tl.from('#demo .section-label', { opacity: 0, y: 30 }, 0)
-          .from('#demo .section-title', { opacity: 0, y: 40 }, 0.05)
-          .from('.demo-terminal', { opacity: 0, y: 50, scale: 0.95 }, 0.15)
-          .from('.demo-controls', { opacity: 0, y: 20 }, 0.3);
-      });
+          // Mouse repulsion
+          var dx = p.x - mouse.x;
+          var dy = p.y - mouse.y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            p.x += dx * 0.02;
+            p.y += dy * 0.02;
+          }
 
-      // FAQ section
-      scrubSection('#faq', 'top 90%', 'top 30%', function(tl) {
-        tl.from('.faq-header .section-label', { opacity: 0, y: 30 }, 0)
-          .from('.faq-header .section-title', { opacity: 0, y: 40 }, 0.05)
-          .from('.faq-item', { opacity: 0, y: 30, stagger: 0.05 }, 0.1);
-      });
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(16, 185, 129, ' + p.o + ')';
+          ctx.fill();
 
-      // CTA
-      scrubSection('#cta', 'top 90%', 'top 40%', function(tl) {
-        tl.from('.cta-headline', { opacity: 0, y: 40 }, 0)
-          .from('.cta-sub', { opacity: 0, y: 30 }, 0.1)
-          .from('.cta-button', { opacity: 0, y: 20, scale: 0.9 }, 0.2);
-      });
-
-      // CTA button glow pulse
-      gsap.to('.cta-button', {
-        boxShadow: '0 0 60px rgba(16, 185, 129, 0.4)',
-        duration: 1.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-      });
-
-      // Hero CTA glow pulse
-      gsap.to('.hero-cta', {
-        boxShadow: '0 0 50px rgba(16, 185, 129, 0.35)',
-        duration: 1.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-      });
-
-      // ======= TYPING DEMO =======
-      var demos = [
-        {
-          prompt: 'Pesquise jurisprudência do STJ sobre prescrição em contrato de locação dos últimos 2 anos',
-          response: 'Encontrei 47 decisões relevantes. As 3 mais citadas:\n\n' +
-            '\u2022 REsp 1.930.442/SP \u2014 prazo prescricional de 3 anos\n' +
-            '\u2022 AgInt no AREsp 2.180.033/RJ \u2014 contagem a partir do vencimento\n' +
-            '\u2022 REsp 2.015.887/MG \u2014 interrupção por notificação\n\n' +
-            'Tend\u00eancia do STJ: prazo trienal. Quer que eu monte a tese?'
-        },
-        {
-          prompt: 'Monte a contestação: cliente locatário, cobrança após 4 anos do débito',
-          response: 'Contestação estruturada:\n\n' +
-            '1. Preliminar: prescrição trienal (art. 206, §3º, I, CC)\n' +
-            '2. Mérito subsidiário: ausência de notificação válida\n' +
-            '3. Pedido: extinção com resolução de mérito\n\n' +
-            'Fundamentação vinculada aos 3 precedentes do STJ.\n' +
-            'Peça completa pronta. 12 páginas, formato CPC.'
-        },
-        {
-          prompt: 'Revise esta petição e aponte o que precisa corrigir',
-          response: 'Revisão concluída. 4 pontos:\n\n' +
-            '\u26a0 Parágrafo 12: cita art. 927 mas fundamenta em responsabilidade objetiva (deveria ser art. 931)\n' +
-            '\u26a0 Pedido "c": valor do dano moral sem parâmetro jurisprudencial\n' +
-            '\u2713 Formatação: OK\n' +
-            '\u2713 Prazos e endereçamento: corretos\n\n' +
-            'Corrigir antes de protocolar?'
-        }
-      ];
-
-      var currentDemo = 0;
-      var typingTimeout = null;
-
-      function typeText(element, text, speed, callback) {
-        var i = 0;
-        element.textContent = '';
-        var cursor = document.createElement('span');
-        cursor.className = 'demo-cursor';
-        element.appendChild(cursor);
-
-        function type() {
-          if (i < text.length) {
-            cursor.remove();
-            if (text[i] === '\n') {
-              element.appendChild(document.createElement('br'));
-            } else {
-              element.appendChild(document.createTextNode(text[i]));
+          // Connections
+          for (var j = i + 1; j < particles.length; j++) {
+            var p2 = particles[j];
+            var cx = p.x - p2.x;
+            var cy = p.y - p2.y;
+            var cdist = Math.sqrt(cx * cx + cy * cy);
+            if (cdist < connectionDistance) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = 'rgba(16, 185, 129, ' + (0.08 * (1 - cdist / connectionDistance)) + ')';
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
             }
-            element.appendChild(cursor);
-            i++;
-            typingTimeout = setTimeout(type, speed);
-          } else {
-            cursor.remove();
-            if (callback) callback();
           }
         }
-        type();
+
+        requestAnimationFrame(draw);
       }
+      draw();
+    })();
 
-      function runDemo(index) {
-        if (typingTimeout) clearTimeout(typingTimeout);
-        var demo = demos[index];
-        var promptEl = document.getElementById('demoPrompt');
-        var responseEl = document.getElementById('demoResponse');
-        promptEl.textContent = '';
-        responseEl.style.display = 'none';
-        responseEl.textContent = '';
+    // ======= READING PROGRESS =======
+    window.addEventListener('scroll', function() {
+      var scrollTop = window.scrollY;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var progress = (scrollTop / docHeight) * 100;
+      document.getElementById('readingProgress').style.width = progress + '%';
 
-        typeText(promptEl, demo.prompt, 35, function() {
-          responseEl.style.display = 'block';
-          typeText(responseEl, demo.response, 15);
-        });
+      // Floating nav visibility
+      var floatNav = document.getElementById('floatNav');
+      if (scrollTop > 600) {
+        floatNav.classList.add('visible');
+      } else {
+        floatNav.classList.remove('visible');
       }
+    });
 
-      document.querySelectorAll('.demo-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          document.querySelectorAll('.demo-btn').forEach(function(b) { b.classList.remove('active'); });
-          btn.classList.add('active');
-          currentDemo = parseInt(btn.dataset.demo);
-          runDemo(currentDemo);
-        });
+    if (prefersReducedMotion) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ======= HERO ORBS FLOAT =======
+    gsap.to('.hero-orb--1', { x: 30, y: -20, scale: 1.05, duration: 12, ease: 'sine.inOut', repeat: -1, yoyo: true });
+    gsap.to('.hero-orb--2', { x: -20, y: 15, scale: 0.95, duration: 15, ease: 'sine.inOut', repeat: -1, yoyo: true });
+    gsap.to('.hero-orb--3', { x: -15, y: -25, scale: 1.08, duration: 10, ease: 'sine.inOut', repeat: -1, yoyo: true });
+
+    // ======= HERO ENTRANCE =======
+    var heroTl = gsap.timeline({ delay: 0.3 });
+    heroTl
+      .from('.hero-badge', { opacity: 0, y: 20, duration: 0.8, ease: 'power3.out' })
+      .from('.hero-headline', { opacity: 0, y: 40, duration: 1, ease: 'power3.out' }, '-=0.5')
+      .from('.hero-sub', { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' }, '-=0.6')
+      .from('.hero-cta', { opacity: 0, y: 20, scale: 0.9, duration: 0.6, ease: 'back.out(1.7)' }, '-=0.4')
+      .from('.hero-scroll-cue', { opacity: 0, duration: 0.6 }, '-=0.3');
+
+    // ======= SCROLL REVEAL HELPER =======
+    function revealSection(trigger, targets, stagger) {
+      gsap.from(targets, {
+        scrollTrigger: {
+          trigger: trigger,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 60,
+        duration: 0.9,
+        ease: 'power3.out',
+        stagger: stagger || 0.1
       });
+    }
 
-      // Auto-start first demo when section is in view
-      ScrollTrigger.create({
-        trigger: '#demo',
-        start: 'top 70%',
-        once: true,
-        onEnter: function() { runDemo(0); }
-      });
+    // Problem
+    revealSection('#problem', '#problem .section-label, #problem .section-title');
+    revealSection('#problem .problem-grid', '.problem-card', 0.15);
 
-      // ======= FAQ ACCORDION =======
-      document.querySelectorAll('.faq-question').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          var item = btn.closest('.faq-item');
-          var answer = item.querySelector('.faq-answer');
-          var isOpen = item.classList.contains('open');
+    // Solution
+    revealSection('#solution', '#solution .section-label, #solution .section-title');
+    revealSection('#solution .solution-grid', '.solution-card', 0.15);
 
-          // Close all others
-          document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
-            if (openItem !== item) {
-              openItem.classList.remove('open');
-              openItem.querySelector('.faq-answer').style.maxHeight = '0';
+    // Trust bar (with counter animation)
+    ScrollTrigger.create({
+      trigger: '.trust-bar',
+      start: 'top 85%',
+      once: true,
+      onEnter: function() {
+        document.querySelectorAll('.trust-number').forEach(function(el) {
+          var target = parseInt(el.dataset.count);
+          gsap.to(el, {
+            duration: 2,
+            ease: 'power2.out',
+            onUpdate: function() {
+              el.textContent = Math.round(this.progress() * target);
             }
           });
+        });
+        gsap.from('.trust-item', { opacity: 0, y: 30, stagger: 0.15, duration: 0.8, ease: 'power3.out' });
+      }
+    });
 
-          if (isOpen) {
-            item.classList.remove('open');
-            answer.style.maxHeight = '0';
+    // How it works
+    revealSection('#how', '.how-header .section-label, .how-header .section-title');
+    gsap.from('.step-card', {
+      scrollTrigger: { trigger: '.steps-grid', start: 'top 80%', toggleActions: 'play none none none' },
+      opacity: 0,
+      y: 60,
+      scale: 0.9,
+      duration: 0.8,
+      ease: 'back.out(1.4)',
+      stagger: 0.2
+    });
+    revealSection('#how', '.step-note');
+
+    // Demo
+    revealSection('#demo', '#demo .section-label, #demo .section-title');
+    gsap.from('.demo-terminal', {
+      scrollTrigger: { trigger: '.demo-terminal', start: 'top 80%', toggleActions: 'play none none none' },
+      opacity: 0,
+      y: 50,
+      scale: 0.95,
+      duration: 1,
+      ease: 'power3.out'
+    });
+    gsap.from('.demo-controls', {
+      scrollTrigger: { trigger: '.demo-controls', start: 'top 90%', toggleActions: 'play none none none' },
+      opacity: 0,
+      y: 20,
+      duration: 0.6
+    });
+
+    // FAQ
+    revealSection('#faq', '.faq-header .section-label, .faq-header .section-title');
+    gsap.from('.faq-item', {
+      scrollTrigger: { trigger: '.faq-list', start: 'top 80%', toggleActions: 'play none none none' },
+      opacity: 0,
+      y: 30,
+      duration: 0.7,
+      stagger: 0.1,
+      ease: 'power3.out'
+    });
+
+    // CTA
+    gsap.from('.cta-headline', {
+      scrollTrigger: { trigger: '#cta', start: 'top 80%', toggleActions: 'play none none none' },
+      opacity: 0, y: 40, duration: 0.8, ease: 'power3.out'
+    });
+    gsap.from('.cta-sub', {
+      scrollTrigger: { trigger: '#cta', start: 'top 75%', toggleActions: 'play none none none' },
+      opacity: 0, y: 30, duration: 0.8, ease: 'power3.out', delay: 0.1
+    });
+    gsap.from('.cta-button', {
+      scrollTrigger: { trigger: '#cta', start: 'top 70%', toggleActions: 'play none none none' },
+      opacity: 0, y: 20, scale: 0.9, duration: 0.6, ease: 'back.out(1.7)', delay: 0.2
+    });
+
+    // ======= CTA GLOW PULSES =======
+    gsap.to('.cta-button', {
+      boxShadow: '0 0 60px rgba(16, 185, 129, 0.4)',
+      duration: 1.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    });
+
+    gsap.to('.hero-cta', {
+      boxShadow: '0 0 50px rgba(16, 185, 129, 0.35)',
+      duration: 1.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    });
+
+    gsap.to('.cta-orb', {
+      scale: 1.2,
+      opacity: 0.4,
+      duration: 4,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    });
+
+    // ======= TYPING DEMO =======
+    var demos = [
+      {
+        prompt: 'Pesquise jurisprudência do STJ sobre prescrição em contrato de locação dos últimos 2 anos',
+        response: 'Encontrei 47 decisões relevantes. As 3 mais citadas:\n\n' +
+          '\u2022 REsp 1.930.442/SP \u2014 prazo prescricional de 3 anos\n' +
+          '\u2022 AgInt no AREsp 2.180.033/RJ \u2014 contagem a partir do vencimento\n' +
+          '\u2022 REsp 2.015.887/MG \u2014 interrupção por notificação\n\n' +
+          'Tendência do STJ: prazo trienal. Quer que eu monte a tese?'
+      },
+      {
+        prompt: 'Monte a contestação: cliente locatário, cobrança após 4 anos do débito',
+        response: 'Contestação estruturada:\n\n' +
+          '1. Preliminar: prescrição trienal (art. 206, §3º, I, CC)\n' +
+          '2. Mérito subsidiário: ausência de notificação válida\n' +
+          '3. Pedido: extinção com resolução de mérito\n\n' +
+          'Fundamentação vinculada aos 3 precedentes do STJ.\n' +
+          'Peça completa pronta. 12 páginas, formato CPC.'
+      },
+      {
+        prompt: 'Revise esta petição e aponte o que precisa corrigir',
+        response: 'Revisão concluída. 4 pontos:\n\n' +
+          '\u26a0 Parágrafo 12: cita art. 927 mas fundamenta em responsabilidade objetiva (deveria ser art. 931)\n' +
+          '\u26a0 Pedido "c": valor do dano moral sem parâmetro jurisprudencial\n' +
+          '\u2713 Formatação: OK\n' +
+          '\u2713 Prazos e endereçamento: corretos\n\n' +
+          'Corrigir antes de protocolar?'
+      }
+    ];
+
+    var currentDemo = 0;
+    var typingTimeout = null;
+
+    function typeText(element, text, speed, callback) {
+      var i = 0;
+      element.textContent = '';
+      var cursor = document.createElement('span');
+      cursor.className = 'demo-cursor';
+      element.appendChild(cursor);
+
+      function type() {
+        if (i < text.length) {
+          cursor.remove();
+          if (text[i] === '\n') {
+            element.appendChild(document.createElement('br'));
           } else {
-            item.classList.add('open');
-            answer.style.maxHeight = answer.scrollHeight + 'px';
+            element.appendChild(document.createTextNode(text[i]));
+          }
+          element.appendChild(cursor);
+          i++;
+          typingTimeout = setTimeout(type, speed);
+        } else {
+          cursor.remove();
+          if (callback) callback();
+        }
+      }
+      type();
+    }
+
+    function runDemo(index) {
+      if (typingTimeout) clearTimeout(typingTimeout);
+      var demo = demos[index];
+      var promptEl = document.getElementById('demoPrompt');
+      var responseEl = document.getElementById('demoResponse');
+      promptEl.textContent = '';
+      responseEl.style.display = 'none';
+      responseEl.textContent = '';
+
+      typeText(promptEl, demo.prompt, 30, function() {
+        responseEl.style.display = 'block';
+        typeText(responseEl, demo.response, 12);
+      });
+    }
+
+    document.querySelectorAll('.demo-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.demo-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        currentDemo = parseInt(btn.dataset.demo);
+        runDemo(currentDemo);
+      });
+    });
+
+    ScrollTrigger.create({
+      trigger: '#demo',
+      start: 'top 70%',
+      once: true,
+      onEnter: function() { runDemo(0); }
+    });
+
+    // ======= FAQ ACCORDION =======
+    document.querySelectorAll('.faq-question').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = btn.closest('.faq-item');
+        var answer = item.querySelector('.faq-answer');
+        var isOpen = item.classList.contains('open');
+
+        document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+          if (openItem !== item) {
+            openItem.classList.remove('open');
+            openItem.querySelector('.faq-answer').style.maxHeight = '0';
           }
         });
-      });
 
-    })();
+        if (isOpen) {
+          item.classList.remove('open');
+          answer.style.maxHeight = '0';
+        } else {
+          item.classList.add('open');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+
+  })();
   </script>
 </body>
 </html>
