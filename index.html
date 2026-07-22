@@ -3,32 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Authus — Seus processos, resolvidos mais rápido</title>
-  <meta name="description" content="Authus: 12 agentes de IA especializados em direito brasileiro. Pesquisa jurisprudência em 84 tribunais, monta petições e revisa em 32 pontos. Para advogados que querem trabalhar menos e entregar mais.">
-  <meta property="og:title" content="Authus — 12 agentes de IA para advogados">
-  <meta property="og:description" content="Pesquisa em 84 tribunais, petições prontas em minutos, revisão automática de 32 pontos. O time de IA que trabalha enquanto você advoga.">
+  <title>Authus — Inteligência de tribunal para advogados</title>
+  <meta name="description" content="Authus: sua equipe de pesquisa digital com 12 agentes especializados. Pesquisa jurisprudência em 84 tribunais, monta petições e revisa em 32 pontos. Volte a ser advogado.">
+  <meta property="og:title" content="Authus — Inteligência de tribunal para advogados">
+  <meta property="og:description" content="12 agentes especializados pesquisam em 84 tribunais, montam petições completas e revisam em 32 pontos. Volte a ser advogado.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* ============================================================
+       AUTHUS — Awwwards-tier Landing Page
+       Theme: Dark Premium (#050a05 base)
+       Accent: Emerald (#10b981) + Gold (#c5a55a)
+       ============================================================ */
+
     :root {
       --dark: #050a05;
+      --dark-900: #081208;
+      --dark-800: #0a160a;
+      --dark-700: #0d1f0d;
       --dark-card: #0a140a;
-      --dark-card-border: rgba(16, 185, 129, 0.12);
+      --dark-card-border: rgba(16, 185, 129, 0.1);
       --green: #10b981;
+      --green-light: #34d399;
       --green-glow: rgba(16, 185, 129, 0.25);
       --green-bright: #00e676;
+      --green-subtle: rgba(16, 185, 129, 0.06);
       --gold: #c5a55a;
+      --gold-light: #d4b96a;
       --gold-dim: rgba(197, 165, 90, 0.3);
+      --gold-subtle: rgba(197, 165, 90, 0.06);
       --text: #e8ede8;
-      --text-dim: #8a9a8a;
-      --font-display: 'Raleway', sans-serif;
+      --text-secondary: #b0c4b0;
+      --text-dim: #6a8a6a;
+      --font-display: 'Space Grotesk', sans-serif;
       --font-body: 'Inter', sans-serif;
-      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --section-pad: clamp(5rem, 12vh, 10rem);
+      --container-pad: clamp(1.25rem, 5vw, 4rem);
     }
 
+    /* ---- Reduced Motion ---- */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -36,16 +57,12 @@
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
       }
+      .particle-canvas { display: none !important; }
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
+    /* ---- Reset ---- */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     body {
       font-family: var(--font-body);
       background: var(--dark);
@@ -53,58 +70,143 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 
-    #particleCanvas {
+    /* ---- Noise Overlay ---- */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+
+    /* ---- Grid Lines Background ---- */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(16, 185, 129, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.018) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    /* ---- Particle Canvas ---- */
+    .particle-canvas {
       position: fixed;
       inset: 0;
       z-index: 0;
       pointer-events: none;
     }
 
+    /* ---- Reading Progress ---- */
     .reading-progress {
       position: fixed;
-      top: 0;
-      left: 0;
-      height: 3px;
+      top: 0; left: 0;
+      height: 2px;
       width: 0%;
       background: linear-gradient(90deg, var(--green), var(--green-bright), var(--gold));
-      z-index: 9999;
-      transition: width 0.1s linear;
-      box-shadow: 0 0 10px var(--green-glow);
+      z-index: 10000;
+      transition: width 0.08s linear;
+      box-shadow: 0 0 12px var(--green-glow);
     }
 
+    /* ---- Cursor Glow ---- */
+    .cursor-glow {
+      position: fixed;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+    }
+
+    /* ---- Container ---- */
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      padding: 0 var(--container-pad);
       position: relative;
       z-index: 2;
     }
 
-    .section-padding { padding: clamp(4rem, 10vh, 8rem) 0; }
+    /* ---- Section ---- */
+    .section { padding: var(--section-pad) 0; position: relative; z-index: 2; }
 
-    body::before {
+    /* ---- Typography ---- */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 1.25rem;
+    }
+    .section-label::before {
       content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(16, 185, 129, 0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(16, 185, 129, 0.015) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 1;
+      width: 20px; height: 1px;
+      background: var(--green);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+    .section-desc {
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      color: var(--text-secondary);
+      max-width: 600px;
+      line-height: 1.75;
     }
 
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(16, 185, 129, 0.008) 2px, rgba(16, 185, 129, 0.008) 4px);
-      pointer-events: none;
-      z-index: 1;
+    /* ---- Glass Card ---- */
+    .glass-card {
+      background: linear-gradient(135deg, rgba(10, 20, 10, 0.7), rgba(10, 20, 10, 0.4));
+      border: 1px solid var(--dark-card-border);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+      overflow: hidden;
     }
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.4), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .glass-card:hover {
+      border-color: rgba(16, 185, 129, 0.25);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 30px rgba(16, 185, 129, 0.04);
+    }
+    .glass-card:hover::before { opacity: 1; }
 
-    /* ======= HERO ======= */
+    /* ============================================================
+       SECTION 1: HERO
+       ============================================================ */
     #hero {
       position: relative;
       min-height: 100vh;
@@ -114,532 +216,1172 @@
       overflow: hidden;
       z-index: 2;
     }
-
-    .hero-fallback {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 30% 50%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
-                  radial-gradient(ellipse at 70% 80%, rgba(197, 165, 90, 0.05) 0%, transparent 50%),
-                  var(--dark);
-      z-index: 0;
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 25% 40%, rgba(16, 185, 129, 0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 75% 70%, rgba(197, 165, 90, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 50% at 50% 10%, rgba(16, 185, 129, 0.04) 0%, transparent 40%),
+        var(--dark);
     }
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: 1;
+      will-change: transform;
+    }
+    .hero-orb--1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(16, 185, 129, 0.15), transparent 70%); top: 5%; left: -15%; }
+    .hero-orb--2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(197, 165, 90, 0.12), transparent 70%); bottom: 5%; right: -8%; }
+    .hero-orb--3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(16, 185, 129, 0.08), transparent 70%); top: 55%; left: 35%; }
 
-    .hero-orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; z-index: 1; }
-    .hero-orb--1 { width: 500px; height: 500px; background: radial-gradient(circle, var(--green-glow), transparent 70%); top: 10%; left: -10%; }
-    .hero-orb--2 { width: 350px; height: 350px; background: radial-gradient(circle, var(--gold-dim), transparent 70%); bottom: 10%; right: -5%; }
-    .hero-orb--3 { width: 250px; height: 250px; background: radial-gradient(circle, rgba(16, 185, 129, 0.15), transparent 70%); top: 60%; left: 40%; }
-
-    .hero-content { position: relative; z-index: 2; text-align: center; max-width: 900px; padding: 0 2rem; }
-
+    .hero-content {
+      position: relative; z-index: 3;
+      text-align: center;
+      max-width: 860px;
+      padding: 0 2rem;
+    }
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1.25rem;
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.2);
-      border-radius: 40px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
+      gap: 0.6rem;
+      padding: 0.45rem 1.2rem;
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-radius: 100px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--green);
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
-
     .hero-badge-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--green);
-      animation: pulse-dot 2s ease-in-out infinite; box-shadow: 0 0 8px var(--green);
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+      animation: pulse-dot 2s ease-in-out infinite;
     }
-
     @keyframes pulse-dot {
-      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green); }
-      50% { opacity: 0.4; box-shadow: 0 0 2px var(--green); }
+      0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--green); }
+      50% { opacity: 0.3; box-shadow: 0 0 3px var(--green); }
     }
 
     .hero-headline {
       font-family: var(--font-display);
-      font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
       font-weight: 700;
-      line-height: 1.15;
+      line-height: 1.1;
       margin-bottom: 1.5rem;
+      letter-spacing: -0.03em;
     }
-
-    .hero-headline em { font-style: normal; color: var(--green); text-shadow: 0 0 40px rgba(16, 185, 129, 0.3); }
+    .hero-headline .accent {
+      color: var(--green);
+      text-shadow: 0 0 60px rgba(16, 185, 129, 0.3);
+      display: inline-block;
+    }
+    .hero-headline .gold-accent {
+      color: var(--gold);
+      text-shadow: 0 0 40px rgba(197, 165, 90, 0.2);
+    }
 
     .hero-sub {
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      color: var(--text-dim);
-      max-width: 650px;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--text-secondary);
+      max-width: 620px;
       margin: 0 auto 2.5rem;
-      line-height: 1.7;
+      line-height: 1.75;
     }
 
-    .hero-cta {
-      display: inline-flex; align-items: center; gap: 0.75rem;
-      background: var(--green); color: var(--dark); font-size: 1rem; font-weight: 700;
-      padding: 1rem 2.5rem; border-radius: 60px; text-decoration: none;
-      transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow: 0 0 30px var(--green-glow);
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
-    .hero-cta:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 0 50px var(--green-glow), 0 10px 40px rgba(0,0,0,0.3); }
-    .hero-cta svg { width: 20px; height: 20px; fill: currentColor; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--green);
+      color: var(--dark);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 0.9rem 2.2rem;
+      border-radius: 100px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 30px var(--green-glow);
+      will-change: transform;
+    }
+    .btn-primary:hover {
+      transform: scale(1.04) translateY(-2px);
+      box-shadow: 0 0 50px var(--green-glow), 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .btn-primary svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.8rem 1.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 100px;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+
+    .hero-trial {
+      margin-top: 1rem;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      letter-spacing: 0.02em;
+    }
 
     .hero-scroll-cue {
-      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-      color: var(--text-dim); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+      position: absolute;
+      bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      z-index: 3;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
     }
-    .hero-scroll-cue span { display: block; width: 1px; height: 40px; background: linear-gradient(to bottom, var(--green), transparent); animation: scroll-pulse 2s ease-in-out infinite; }
-    @keyframes scroll-pulse { 0%, 100% { opacity: 1; transform: scaleY(1); } 50% { opacity: 0.4; transform: scaleY(0.6); } }
-
-    /* ======= FLOAT NAV ======= */
-    .float-nav {
-      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 100;
-      opacity: 0; transform: translateY(20px); transition: opacity 0.4s, transform 0.4s; pointer-events: none;
+    .hero-scroll-cue .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--green), transparent);
+      animation: scroll-line-pulse 2.5s ease-in-out infinite;
     }
-    .float-nav.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
-    .float-nav a {
-      display: flex; align-items: center; gap: 0.5rem;
-      background: var(--green); color: var(--dark); font-size: 0.85rem; font-weight: 700;
-      padding: 0.85rem 1.5rem; border-radius: 50px; text-decoration: none;
-      box-shadow: 0 0 30px var(--green-glow), 0 8px 32px rgba(0,0,0,0.4);
-      transition: transform 0.3s, box-shadow 0.3s;
+    @keyframes scroll-line-pulse {
+      0%, 100% { opacity: 1; transform: scaleY(1); }
+      50% { opacity: 0.3; transform: scaleY(0.5); }
     }
-    .float-nav a:hover { transform: scale(1.05); box-shadow: 0 0 50px var(--green-glow); }
-    .float-nav svg { width: 18px; height: 18px; fill: currentColor; }
-
-    /* ======= COMMON ======= */
-    .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 1rem; text-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
-    .section-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; line-height: 1.2; margin-bottom: 1.5rem; }
-
-    /* Glass card base */
-    .glass-card {
-      background: rgba(10, 20, 10, 0.6);
-      border: 1px solid var(--dark-card-border);
-      border-radius: 16px;
-      padding: 2rem;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
-      position: relative;
-      overflow: hidden;
+    .hero-scroll-cue span {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
     }
-    .glass-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), transparent);
-      opacity: 0; transition: opacity 0.4s;
+
+    /* ============================================================
+       SECTION 2: PROBLEM
+       ============================================================ */
+    .problem-header { text-align: center; margin-bottom: 3.5rem; }
+    .problem-header .section-desc { margin: 0 auto; }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
     }
-    .glass-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-    .glass-card:hover::before { opacity: 1; }
-
-    /* ======= PROBLEM ======= */
-    #problem { position: relative; z-index: 2; }
-
-    .problem-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
     @media (max-width: 640px) { .problem-grid { grid-template-columns: 1fr; } }
 
-    .problem-card:hover { border-color: rgba(197, 165, 90, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(197, 165, 90, 0.05); }
-    .problem-card::before { background: linear-gradient(90deg, transparent, rgba(197, 165, 90, 0.3), transparent); }
-
-    .problem-icon { width: 44px; height: 44px; margin-bottom: 1.25rem; color: var(--gold); filter: drop-shadow(0 0 8px rgba(197, 165, 90, 0.3)); }
+    .problem-card { cursor: default; }
+    .problem-card:hover {
+      border-color: rgba(197, 165, 90, 0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 30px rgba(197, 165, 90, 0.03);
+    }
+    .problem-card:hover::before {
+      background: linear-gradient(90deg, transparent, rgba(197, 165, 90, 0.3), transparent);
+    }
+    .problem-icon {
+      width: 40px; height: 40px;
+      margin-bottom: 1.25rem;
+      color: var(--gold);
+      opacity: 0.8;
+    }
     .problem-icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.5; }
-    .problem-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .problem-desc { font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; }
+    .problem-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .problem-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; }
 
-    /* ======= SOLUTION ======= */
-    #solution { position: relative; z-index: 2; }
-    .solution-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    /* ============================================================
+       SECTION 3: SOLUTION + TRUST BAR
+       ============================================================ */
+    .solution-header { text-align: center; margin-bottom: 3.5rem; }
+    .solution-header .section-desc { margin: 0 auto; }
+
+    .solution-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
     @media (max-width: 640px) { .solution-grid { grid-template-columns: 1fr; } }
 
-    .solution-card:hover { border-color: var(--green); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px var(--green-glow); }
-    .solution-icon { width: 44px; height: 44px; margin-bottom: 1.25rem; color: var(--green); filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3)); }
+    .solution-card:hover { border-color: rgba(16, 185, 129, 0.3); }
+    .solution-icon {
+      width: 40px; height: 40px;
+      margin-bottom: 1.25rem;
+      color: var(--green);
+      opacity: 0.8;
+    }
     .solution-icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.5; }
-    .solution-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .solution-desc { font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; }
+    .solution-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .solution-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; }
 
-    /* Trust bar */
-    .trust-bar { display: flex; justify-content: center; gap: clamp(2rem, 5vw, 4rem); margin-top: 4rem; flex-wrap: wrap; }
+    /* Trust Bar */
+    .trust-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+      padding: 2.5rem 2rem;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.04), rgba(16, 185, 129, 0.01));
+      border: 1px solid rgba(16, 185, 129, 0.08);
+      border-radius: var(--radius-lg);
+    }
     .trust-item { text-align: center; }
-    .trust-number { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; color: var(--green); line-height: 1; text-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
-    .trust-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.35rem; }
-
-    /* ======= WHO IS AUTHUS ======= */
-    #who { position: relative; z-index: 2; }
-
-    .who-intro {
-      font-size: clamp(1rem, 2vw, 1.15rem);
+    .trust-number {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .trust-label {
+      font-size: 0.72rem;
       color: var(--text-dim);
-      max-width: 700px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: 0.5rem;
+    }
+
+    /* ============================================================
+       SECTION 4: WHO IS AUTHUS (AGENTS)
+       ============================================================ */
+    .who-header { text-align: center; margin-bottom: 2rem; }
+    .who-intro {
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      color: var(--text-secondary);
+      max-width: 680px;
       margin: 0 auto 3rem;
       text-align: center;
       line-height: 1.8;
     }
-
-    .who-intro strong { color: var(--text); }
+    .who-intro strong { color: var(--text); font-weight: 600; }
 
     .agents-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
+      gap: 0.75rem;
     }
-
     @media (max-width: 900px) { .agents-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 540px) { .agents-grid { grid-template-columns: 1fr; } }
 
     .agent-card {
-      background: rgba(10, 20, 10, 0.5);
+      background: linear-gradient(135deg, rgba(10, 20, 10, 0.5), rgba(10, 20, 10, 0.3));
       border: 1px solid var(--dark-card-border);
-      border-radius: 12px;
+      border-radius: var(--radius-sm);
       padding: 1.25rem 1.5rem;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      transition: border-color 0.3s, transform 0.3s;
+      transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-
+    .agent-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--green);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
     .agent-card:hover {
-      border-color: rgba(16, 185, 129, 0.25);
-      transform: translateY(-3px);
+      border-color: rgba(16, 185, 129, 0.2);
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.04), rgba(10, 20, 10, 0.4));
     }
+    .agent-card:hover::after { opacity: 1; }
 
     .agent-name {
-      font-size: 0.85rem;
+      font-family: var(--font-display);
+      font-size: 0.82rem;
       font-weight: 600;
       color: var(--green);
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.3rem;
     }
-
-    .agent-role {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      line-height: 1.5;
-    }
+    .agent-role { font-size: 0.78rem; color: var(--text-dim); line-height: 1.55; }
 
     .who-note {
       text-align: center;
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: var(--text-dim);
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.7;
+      margin-top: 2.5rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      max-width: 620px;
+      margin-left: auto; margin-right: auto;
+      line-height: 1.75;
+      padding: 1.5rem 2rem;
+      background: var(--green-subtle);
+      border: 1px solid rgba(16, 185, 129, 0.08);
+      border-radius: var(--radius-md);
     }
 
-    /* ======= HOW ======= */
-    #how { position: relative; z-index: 2; }
+    /* ============================================================
+       SECTION 5: HOW IT WORKS
+       ============================================================ */
     .how-header { text-align: center; margin-bottom: 4rem; }
-    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; position: relative; }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      position: relative;
+    }
     .steps-grid::before {
-      content: ''; position: absolute; top: 50%; left: 10%; right: 10%; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--green-glow), var(--green), var(--green-glow), transparent);
+      content: '';
+      position: absolute;
+      top: 50%; left: 8%; right: 8%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.15), var(--green), rgba(16, 185, 129, 0.15), transparent);
       z-index: 0;
     }
     @media (max-width: 768px) {
-      .steps-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
-      .steps-grid::before { top: 10%; bottom: 10%; left: 50%; right: auto; width: 1px; height: auto; background: linear-gradient(180deg, transparent, var(--green-glow), var(--green), var(--green-glow), transparent); }
-    }
-    .step-card {
-      background: rgba(10, 20, 10, 0.7); border: 1px solid var(--dark-card-border); border-radius: 16px;
-      padding: 2rem 1.5rem; text-align: center; position: relative; z-index: 1;
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
-    }
-    .step-card:hover { border-color: rgba(16, 185, 129, 0.3); transform: translateY(-4px); }
-    .step-number { font-family: var(--font-display); font-size: 3rem; font-weight: 900; color: var(--green); opacity: 0.3; line-height: 1; margin-bottom: 1rem; text-shadow: 0 0 30px rgba(16, 185, 129, 0.2); }
-    .step-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .step-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; }
-    .step-note {
-      text-align: center; margin-top: 2.5rem; font-size: 0.9rem; color: var(--text-dim); font-style: italic;
-      padding: 1.5rem; background: rgba(16, 185, 129, 0.03); border: 1px solid rgba(16, 185, 129, 0.08); border-radius: 12px;
+      .steps-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+      .steps-grid::before {
+        top: 5%; bottom: 5%; left: 50%; right: auto;
+        width: 1px; height: auto;
+        background: linear-gradient(180deg, transparent, rgba(16, 185, 129, 0.15), var(--green), rgba(16, 185, 129, 0.15), transparent);
+      }
     }
 
-    /* ======= DEMO ======= */
-    #demo { position: relative; z-index: 2; }
-    .demo-terminal {
-      background: #0d1117; border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 16px;
-      max-width: 800px; margin: 0 auto; overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(16, 185, 129, 0.05);
+    .step-card {
+      background: linear-gradient(135deg, rgba(10, 20, 10, 0.7), rgba(10, 20, 10, 0.4));
+      border: 1px solid var(--dark-card-border);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative; z-index: 1;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: border-color 0.4s, transform 0.4s;
     }
-    .demo-terminal-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .step-card:hover { border-color: rgba(16, 185, 129, 0.25); transform: translateY(-4px); }
+
+    .step-number {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--green), rgba(16, 185, 129, 0.2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .step-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.6rem; }
+    .step-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; }
+
+    .step-note {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin-left: auto; margin-right: auto;
+      line-height: 1.7;
+      padding: 1.5rem 2rem;
+      background: var(--green-subtle);
+      border: 1px solid rgba(16, 185, 129, 0.08);
+      border-radius: var(--radius-md);
+    }
+
+    /* ============================================================
+       SECTION 6: DEMO
+       ============================================================ */
+    .demo-header { text-align: center; margin-bottom: 3rem; }
+    .demo-header .section-desc { margin: 0 auto; }
+
+    .demo-terminal {
+      background: #080e14;
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-radius: var(--radius-lg);
+      max-width: 820px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow:
+        0 30px 80px rgba(0,0,0,0.5),
+        0 0 60px rgba(16, 185, 129, 0.03),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+    .demo-terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.25rem;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
     .demo-terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
     .demo-terminal-dot--red { background: #ff5f57; }
     .demo-terminal-dot--yellow { background: #febc2e; }
     .demo-terminal-dot--green { background: #28c840; }
-    .demo-terminal-title { font-size: 0.7rem; color: var(--text-dim); margin-left: 0.5rem; font-family: var(--font-mono); }
-    .demo-terminal-body { padding: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.8; min-height: 250px; }
-    .demo-prompt { color: var(--green); }
-    .demo-prompt::before { content: '> '; color: var(--green); opacity: 0.5; }
-    .demo-response { color: var(--text-dim); margin-top: 0.75rem; padding-left: 1rem; border-left: 2px solid rgba(16, 185, 129, 0.2); }
-    .demo-cursor { display: inline-block; width: 2px; height: 1em; background: var(--green); animation: blink-cursor 1s step-end infinite; vertical-align: text-bottom; margin-left: 2px; box-shadow: 0 0 6px var(--green); }
+    .demo-terminal-title {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      margin-left: auto;
+    }
+
+    .demo-terminal-body {
+      padding: 1.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.8;
+      min-height: 280px;
+    }
+    .demo-prompt { color: var(--green-light); }
+    .demo-prompt::before { content: '$ '; color: var(--green); opacity: 0.5; }
+    .demo-response {
+      color: var(--text-secondary);
+      margin-top: 0.75rem;
+      padding-left: 1rem;
+      border-left: 2px solid rgba(16, 185, 129, 0.15);
+    }
+    .demo-cursor {
+      display: inline-block;
+      width: 2px; height: 1em;
+      background: var(--green);
+      animation: blink-cursor 1s step-end infinite;
+      vertical-align: text-bottom;
+      margin-left: 2px;
+      box-shadow: 0 0 6px var(--green);
+    }
     @keyframes blink-cursor { 50% { opacity: 0; } }
-    .demo-controls { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap; }
+
+    .demo-controls {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
     .demo-btn {
-      background: rgba(10, 20, 10, 0.6); border: 1px solid var(--dark-card-border); color: var(--text-dim);
-      padding: 0.5rem 1.25rem; border-radius: 8px; font-size: 0.75rem; font-family: var(--font-body); cursor: pointer;
+      background: rgba(10, 20, 10, 0.6);
+      border: 1px solid var(--dark-card-border);
+      color: var(--text-dim);
+      padding: 0.5rem 1.25rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.72rem;
+      font-weight: 500;
       transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
     }
-    .demo-btn:hover, .demo-btn.active { border-color: var(--green); color: var(--green); box-shadow: 0 0 15px rgba(16, 185, 129, 0.1); }
+    .demo-btn:hover, .demo-btn.active {
+      border-color: var(--green);
+      color: var(--green);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.08);
+    }
 
-    /* ======= FAQ ======= */
-    #faq { position: relative; z-index: 2; }
+    /* ============================================================
+       SECTION 7: SOCIAL PROOF
+       ============================================================ */
+    .proof-header { text-align: center; margin-bottom: 3.5rem; }
+    .proof-header .section-desc { margin: 0 auto; }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 768px) { .proof-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; } }
+
+    .proof-card {
+      padding: 2rem;
+      position: relative;
+    }
+    .proof-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 2rem; right: 2rem;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--dark-card-border), transparent);
+    }
+
+    .proof-quote {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      position: relative;
+      padding-left: 1rem;
+      border-left: 2px solid rgba(197, 165, 90, 0.3);
+    }
+
+    .proof-author { display: flex; align-items: center; gap: 0.75rem; }
+    .proof-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-subtle), var(--gold-subtle));
+      border: 1px solid var(--dark-card-border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+    .proof-name { font-size: 0.82rem; font-weight: 600; }
+    .proof-meta { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.15rem; }
+    .proof-result {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.4rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--green);
+      background: var(--green-subtle);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+    }
+
+    /* ============================================================
+       SECTION 8: PRICING
+       ============================================================ */
+    .pricing-header { text-align: center; margin-bottom: 3.5rem; }
+    .pricing-header .section-desc { margin: 0 auto; }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    @media (max-width: 640px) { .pricing-grid { grid-template-columns: 1fr; max-width: 420px; } }
+
+    .pricing-card {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+      transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+    }
+    .pricing-card.featured {
+      border-color: rgba(16, 185, 129, 0.25);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.06), rgba(10, 20, 10, 0.7));
+    }
+    .pricing-card.featured::before { opacity: 1; }
+
+    .pricing-badge {
+      position: absolute;
+      top: -1px; left: 50%; transform: translateX(-50%);
+      background: var(--green);
+      color: var(--dark);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 1.2rem;
+      border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    }
+
+    .pricing-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .pricing-target {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+    }
+    .pricing-price {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.02em;
+    }
+    .pricing-price-suffix {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--text-dim);
+    }
+    .pricing-period {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+    }
+
+    .pricing-features {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+    .pricing-features li {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+    .pricing-features li::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-top: 0.45rem;
+      flex-shrink: 0;
+    }
+
+    .pricing-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      justify-content: center;
+      padding: 0.85rem 2rem;
+      border-radius: 100px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    }
+    .pricing-cta.primary {
+      background: var(--green);
+      color: var(--dark);
+      box-shadow: 0 0 30px var(--green-glow);
+    }
+    .pricing-cta.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 50px var(--green-glow), 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .pricing-cta.secondary {
+      background: transparent;
+      color: var(--green);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    .pricing-cta.secondary:hover {
+      border-color: var(--green);
+      background: var(--green-subtle);
+    }
+    .pricing-cta svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+    .pricing-guarantee {
+      text-align: center;
+      margin-top: 2.5rem;
+      max-width: 600px;
+      margin-left: auto; margin-right: auto;
+    }
+    .pricing-guarantee-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .pricing-guarantee-text {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .pricing-anchor {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       SECTION 9: FAQ
+       ============================================================ */
     .faq-header { text-align: center; margin-bottom: 3rem; }
-    .faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+
+    .faq-list {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
     .faq-item {
-      background: rgba(10, 20, 10, 0.6); border: 1px solid var(--dark-card-border); border-radius: 12px;
-      overflow: hidden; transition: border-color 0.4s; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      background: linear-gradient(135deg, rgba(10, 20, 10, 0.6), rgba(10, 20, 10, 0.3));
+      border: 1px solid var(--dark-card-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: border-color 0.4s;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
-    .faq-item:hover { border-color: rgba(16, 185, 129, 0.3); }
+    .faq-item:hover { border-color: rgba(16, 185, 129, 0.2); }
+
     .faq-question {
-      width: 100%; background: none; border: none; color: var(--text); font-family: var(--font-body);
-      font-size: 0.95rem; font-weight: 600; text-align: left; padding: 1.25rem 1.5rem; cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+      width: 100%;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-align: left;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
     }
-    .faq-question::after { content: '+'; font-size: 1.2rem; color: var(--green); flex-shrink: 0; transition: transform 0.3s; }
-    .faq-item.open .faq-question::after { transform: rotate(45deg); }
+    .faq-toggle {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.3s, background 0.3s, border-color 0.3s;
+    }
+    .faq-toggle::after {
+      content: '+';
+      font-size: 1rem;
+      color: var(--green);
+      font-weight: 300;
+    }
+    .faq-item.open .faq-toggle {
+      transform: rotate(45deg);
+      background: var(--green-subtle);
+      border-color: var(--green);
+    }
+
     .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-    .faq-answer-inner { padding: 0 1.5rem 1.25rem; font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; }
-
-    /* ======= CTA ======= */
-    #cta { position: relative; text-align: center; z-index: 2; }
-    .cta-content { position: relative; z-index: 2; }
-    .cta-headline { font-family: var(--font-display); font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 700; margin-bottom: 1.5rem; line-height: 1.2; }
-    .cta-sub { font-size: 1.1rem; color: var(--text-dim); max-width: 550px; margin: 0 auto 2.5rem; line-height: 1.7; }
-    .cta-button {
-      display: inline-flex; align-items: center; gap: 0.75rem;
-      background: var(--green); color: var(--dark); font-size: 1.1rem; font-weight: 700;
-      padding: 1.15rem 3rem; border-radius: 60px; text-decoration: none;
-      transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 0 30px var(--green-glow);
+    .faq-answer-inner {
+      padding: 0 1.5rem 1.25rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
     }
-    .cta-button:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 0 60px var(--green-glow), 0 10px 40px rgba(0,0,0,0.3); }
-    .cta-button svg { width: 22px; height: 22px; fill: currentColor; }
-    .cta-orb { position: absolute; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, var(--green-glow), transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); filter: blur(80px); opacity: 0.3; z-index: 0; }
 
-    /* ======= FOOTER ======= */
-    footer { padding: 3rem 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 2; }
-    footer p { font-size: 0.8rem; color: var(--text-dim); }
+    /* ============================================================
+       SECTION 10: CTA FINAL
+       ============================================================ */
+    #cta-final { text-align: center; }
 
-    .reveal { opacity: 1; }
+    .cta-wrapper {
+      position: relative;
+      padding: 4rem 2rem;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.04), rgba(10, 20, 10, 0.8));
+      border: 1px solid rgba(16, 185, 129, 0.08);
+      overflow: hidden;
+    }
+    .cta-orb {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.12), transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      filter: blur(80px);
+      z-index: 0;
+    }
+    .cta-content { position: relative; z-index: 2; }
+
+    .cta-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .cta-sub {
+      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto 2rem;
+      line-height: 1.75;
+    }
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--green);
+      color: var(--dark);
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 1.1rem 2.8rem;
+      border-radius: 100px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 0 40px var(--green-glow);
+    }
+    .cta-button:hover {
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 0 60px var(--green-glow), 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .cta-button svg { width: 20px; height: 20px; fill: currentColor; }
+
+    /* ============================================================
+       FLOATING WHATSAPP
+       ============================================================ */
+    .float-whatsapp {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+    }
+    .float-whatsapp.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+    .float-whatsapp a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--green);
+      color: var(--dark);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.8rem 1.4rem;
+      border-radius: 100px;
+      box-shadow: 0 0 30px var(--green-glow), 0 8px 32px rgba(0,0,0,0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .float-whatsapp a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 50px var(--green-glow), 0 12px 40px rgba(0,0,0,0.4);
+    }
+    .float-whatsapp svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
+
+    /* Ensure never cut off on mobile */
+    @media (max-width: 480px) {
+      .float-whatsapp { right: 1rem; bottom: 1rem; }
+      .float-whatsapp a { padding: 0.7rem 1.1rem; font-size: 0.78rem; }
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    footer {
+      padding: 3rem 0;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      position: relative;
+      z-index: 2;
+    }
+    footer p { font-size: 0.75rem; color: var(--text-dim); }
+
+    /* ============================================================
+       SECTION DIVIDERS
+       ============================================================ */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============================================================
+       MAGNETIC BUTTON EFFECT (applied via JS)
+       ============================================================ */
+    .magnetic { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+
+    /* ============================================================
+       KINETIC TYPE ANIMATION
+       ============================================================ */
+    .kinetic-word {
+      display: inline-block;
+      transition: font-weight 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  letter-spacing 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ============================================================
+       RESPONSIVE POLISH
+       ============================================================ */
+    @media (max-width: 768px) {
+      .section { padding: clamp(3rem, 8vh, 6rem) 0; }
+      .hero-headline { font-size: clamp(2rem, 8vw, 3rem); }
+      .hero-sub { font-size: 0.95rem; }
+      .section-title { font-size: clamp(1.7rem, 5vw, 2.5rem); }
+      .trust-bar { padding: 2rem 1rem; gap: 0.75rem; }
+      .trust-number { font-size: clamp(1.8rem, 5.5vw, 2.5rem); }
+      .trust-label { font-size: 0.6rem; letter-spacing: 0.08em; }
+      .pricing-price { font-size: 2.5rem; }
+      .cta-wrapper { padding: 3rem 1.5rem; }
+      .section-divider { margin: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .section { padding: clamp(2.5rem, 7vh, 4rem) 0; }
+      .hero-badge { font-size: 0.6rem; padding: 0.4rem 1rem; }
+      .hero-cta-group { flex-direction: column; }
+      .btn-primary { width: 100%; justify-content: center; }
+      .btn-secondary { width: 100%; justify-content: center; }
+      .trust-bar { padding: 1.5rem 0.75rem; gap: 0.5rem; }
+      .trust-number { font-size: clamp(1.5rem, 5vw, 2rem); }
+    }
+
+    @media (max-width: 360px) {
+      .trust-bar { padding: 1.25rem 0.5rem; }
+      .trust-number { font-size: 1.4rem; }
+      .trust-label { font-size: 0.55rem; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="reading-progress" id="readingProgress"></div>
-  <canvas id="particleCanvas"></canvas>
+  <!-- Particle Canvas -->
+  <canvas class="particle-canvas" id="particleCanvas" aria-hidden="true"></canvas>
+
+  <!-- Cursor Glow -->
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <!-- Reading Progress -->
+  <div class="reading-progress" id="readingProgress" role="progressbar" aria-label="Progresso de leitura"></div>
 
   <!-- Floating WhatsApp -->
-  <div class="float-nav" id="floatNav">
-    <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus" target="_blank">
+  <div class="float-whatsapp" id="floatWhatsapp">
+    <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus" target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
       <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       WhatsApp
     </a>
   </div>
 
-  <!-- ====== HERO ====== -->
+  <!-- ====== SECTION 1: HERO ====== -->
   <header id="hero">
-    <div class="hero-fallback"></div>
-    <div class="hero-orb hero-orb--1"></div>
-    <div class="hero-orb hero-orb--2"></div>
-    <div class="hero-orb hero-orb--3"></div>
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb--1" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb--2" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb--3" aria-hidden="true"></div>
 
     <div class="hero-content">
-      <div class="hero-badge reveal"><span class="hero-badge-dot"></span> Para advogados</div>
-      <h1 class="hero-headline reveal">Pesquise, redija e revise<br>em <em>minutos, não horas.</em></h1>
-      <p class="hero-sub reveal">O Authus é um time de 12 agentes de IA especializados em direito brasileiro. Eles pesquisam jurisprudência em 84 tribunais, montam petições completas e revisam tudo em 32 pontos antes de entregar. Você foca nos seus clientes.</p>
-      <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus" target="_blank" class="hero-cta reveal">
-        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Quero conhecer o Authus
-      </a>
+      <div class="hero-badge">
+        <span class="hero-badge-dot" aria-hidden="true"></span>
+        Inteligência de tribunal
+      </div>
+
+      <h1 class="hero-headline">
+        <span class="kinetic-word">Volte</span> <span class="kinetic-word">a</span> <span class="kinetic-word">ser</span>
+        <span class="kinetic-word accent">advogado.</span>
+      </h1>
+
+      <p class="hero-sub">12 agentes especializados pesquisam jurisprudência em 84 tribunais, montam petições completas e revisam em 32 pontos. Você foca na estratégia e nos seus clientes.</p>
+
+      <div class="hero-cta-group">
+        <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus" target="_blank" rel="noopener noreferrer" class="btn-primary magnetic" aria-label="Conhecer o Authus via WhatsApp">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Quero conhecer o Authus
+        </a>
+        <a href="#demo" class="btn-secondary">
+          Ver demonstração
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+      </div>
+
+      <p class="hero-trial">7 dias grátis com onboarding guiado</p>
     </div>
 
-    <div class="hero-scroll-cue"><span></span></div>
+    <div class="hero-scroll-cue" aria-hidden="true">
+      <span>Descubra</span>
+      <div class="scroll-line"></div>
+    </div>
   </header>
 
   <main>
-    <!-- ====== O PROBLEMA ====== -->
-    <section id="problem" class="section-padding">
+    <div class="section-divider"></div>
+
+    <!-- ====== SECTION 2: O PROBLEMA ====== -->
+    <section id="problem" class="section" aria-labelledby="problem-title">
       <div class="container">
-        <div style="text-align: center; margin-bottom: 3rem;">
-          <p class="section-label reveal">Você conhece essa rotina</p>
-          <h2 class="section-title reveal" style="max-width: 700px; margin-left: auto; margin-right: auto;">O trabalho pesado que<br>rouba suas horas</h2>
-          <p style="color: var(--text-dim); max-width: 600px; margin: 0 auto; line-height: 1.7;">Advogado passa mais tempo pesquisando, formatando e revisando do que pensando na estratégia do caso. A conta do tempo não fecha.</p>
+        <div class="problem-header">
+          <p class="section-label">Você conhece essa rotina</p>
+          <h2 class="section-title" id="problem-title">O trabalho que rouba<br>suas melhores horas</h2>
+          <p class="section-desc">Advogado gasta mais tempo pesquisando, formatando e revisando do que pensando na estratégia do caso. A conta não fecha.</p>
         </div>
 
         <div class="problem-grid">
-          <div class="glass-card problem-card reveal">
+          <div class="glass-card problem-card">
             <div class="problem-icon"><svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></div>
-            <h4 class="problem-title">Pesquisa que nunca acaba</h4>
-            <p class="problem-desc">Entrar em portal de tribunal, digitar palavra por palavra, filtrar por data, ler ementas, descartar, digitar de novo. Três horas para encontrar meia dúzia de precedentes. E ainda precisa confirmar se estão vigentes.</p>
+            <h3 class="problem-title">Pesquisa que nunca acaba</h3>
+            <p class="problem-desc">Portal de tribunal, palavra por palavra, filtrar por data, ler ementas, descartar. Três horas para meia dúzia de precedentes que ainda precisam de confirmação.</p>
           </div>
-          <div class="glass-card problem-card reveal">
+          <div class="glass-card problem-card">
             <div class="problem-icon"><svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></div>
-            <h4 class="problem-title">Petição do zero, toda vez</h4>
-            <p class="problem-desc">Mesmo tipo de ação, mesmo formato, mesma estrutura. Mas você reescreve cada peça como se fosse a primeira. Copia ementa, cola artigo, formata cabeçalho, ajusta endereçamento. Trabalho que se repete, caso após caso.</p>
+            <h3 class="problem-title">Petição do zero, toda vez</h3>
+            <p class="problem-desc">Mesmo tipo de ação, mesmo formato. Você reescreve cada peça como se fosse a primeira. Copia ementa, cola artigo, formata cabeçalho. Trabalho que se repete.</p>
           </div>
-          <div class="glass-card problem-card reveal">
+          <div class="glass-card problem-card">
             <div class="problem-icon"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-            <h4 class="problem-title">Prazos apertados, sempre</h4>
-            <p class="problem-desc">Contestação para quinta, réplica para sexta, recurso para segunda. O cliente liga cobrando, o prazo não espera e a petição sai corrida. Você sabe que podia ter encontrado um precedente melhor, mas o dia não teve horas suficientes.</p>
+            <h3 class="problem-title">Prazos apertados, sempre</h3>
+            <p class="problem-desc">Contestação para quinta, réplica para sexta, recurso para segunda. O prazo não espera e a petição sai corrida. Podia ter achado um precedente melhor.</p>
           </div>
-          <div class="glass-card problem-card reveal">
+          <div class="glass-card problem-card">
             <div class="problem-icon"><svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
-            <h4 class="problem-title">Trabalho operacional demais</h4>
-            <p class="problem-desc">Você fez cinco anos de faculdade, pós-graduação e passou na OAB. Mas gasta 60% do dia em tarefas que não exigem formação jurídica: copiar ementa, formatar documento, conferir prazo, montar planilha de acompanhamento.</p>
+            <h3 class="problem-title">Operacional demais</h3>
+            <p class="problem-desc">Cinco anos de faculdade, pós e OAB. Mas 60% do dia vai em tarefas que não exigem formação jurídica. Copiar ementa, formatar documento, conferir prazo.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ====== O QUE O AUTHUS FAZ ====== -->
-    <section id="solution" class="section-padding">
+    <div class="section-divider"></div>
+
+    <!-- ====== SECTION 3: O QUE O AUTHUS FAZ ====== -->
+    <section id="solution" class="section" aria-labelledby="solution-title">
       <div class="container">
-        <div style="text-align: center; margin-bottom: 3rem;">
-          <p class="section-label reveal">O que o Authus faz por você</p>
-          <h2 class="section-title reveal" style="max-width: 700px; margin-left: auto; margin-right: auto;">Menos trabalho operacional.<br>Mais tempo para advogar.</h2>
-          <p style="color: var(--text-dim); max-width: 620px; margin: 0 auto; line-height: 1.7;">Cada capacidade abaixo é executada por agentes especializados que trabalham juntos. Não é um chatbot genérico. É um time treinado em direito brasileiro.</p>
+        <div class="solution-header">
+          <p class="section-label">Inteligência de tribunal</p>
+          <h2 class="section-title" id="solution-title">Sua equipe de pesquisa digital.<br>Disponível agora.</h2>
+          <p class="section-desc">Cada capacidade é executada por agentes especializados que trabalham em sequência. Treinados em direito brasileiro, não um chatbot genérico.</p>
         </div>
 
         <div class="solution-grid">
-          <div class="glass-card solution-card reveal">
+          <div class="glass-card solution-card">
             <div class="solution-icon"><svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></div>
-            <h4 class="solution-title">Pesquisa jurisprudência em 84 tribunais</h4>
-            <p class="solution-desc">Busca em todos os tribunais brasileiros via DataJud, a base oficial do CNJ. Encontra os precedentes mais relevantes para o seu caso, organiza por tribunal e data, e separa os artigos aplicáveis. Em segundos, não horas.</p>
+            <h3 class="solution-title">Pesquisa em 84 tribunais</h3>
+            <p class="solution-desc">Busca via DataJud, a base oficial do CNJ. Precedentes relevantes organizados por tribunal e data, artigos aplicáveis separados. Em segundos.</p>
           </div>
-          <div class="glass-card solution-card reveal">
+          <div class="glass-card solution-card">
             <div class="solution-icon"><svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></div>
-            <h4 class="solution-title">Monta petições completas em minutos</h4>
-            <p class="solution-desc">Contestação, inicial, recurso, mandado de segurança, embargos. No formato CPC, com fundamentação vinculada aos precedentes que encontrou. A peça sai com cabeçalho, endereçamento, pedidos e encerramento. Pronta para revisar.</p>
+            <h3 class="solution-title">Petições completas em minutos</h3>
+            <p class="solution-desc">Contestação, inicial, recurso, mandado de segurança. Formato CPC, fundamentação vinculada aos precedentes. Pronta para revisão.</p>
           </div>
-          <div class="glass-card solution-card reveal">
+          <div class="glass-card solution-card">
             <div class="solution-icon"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div>
-            <h4 class="solution-title">Revisa em 32 pontos antes de entregar</h4>
-            <p class="solution-desc">Confere citação de artigos, coerência entre pedidos e fundamentação, prazos, formatação CPC, adequação processual e consistência interna. Se algo falha, sinaliza. Você decide o que corrigir antes de protocolar.</p>
+            <h3 class="solution-title">Revisão em 32 pontos</h3>
+            <p class="solution-desc">Citação de artigos, coerência pedidos-fundamentação, prazos, formatação CPC, adequação processual. Se algo falha, sinaliza.</p>
           </div>
-          <div class="glass-card solution-card reveal">
+          <div class="glass-card solution-card">
             <div class="solution-icon"><svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
-            <h4 class="solution-title">Gera relatório para o seu cliente</h4>
-            <p class="solution-desc">Explica o caso em linguagem que gente normal entende. Sem juridiquês, sem artigo solto, sem ementa crua. Seu cliente lê sozinho, entende o cenário, sabe quais são os próximos passos. Para de ligar todo dia pedindo tradução.</p>
+            <h3 class="solution-title">Relatório para o cliente</h3>
+            <p class="solution-desc">Explica o caso sem juridiquês. Seu cliente lê sozinho, entende o cenário e os próximos passos. Para de ligar todo dia pedindo tradução.</p>
           </div>
         </div>
 
-        <div class="trust-bar reveal">
+        <!-- Trust Bar -->
+        <div class="trust-bar">
           <div class="trust-item">
-            <div class="trust-number" data-count="84">0</div>
-            <div class="trust-label">tribunais</div>
+            <div class="trust-number" data-count="84" aria-label="84 tribunais">0</div>
+            <div class="trust-label">Tribunais</div>
           </div>
           <div class="trust-item">
-            <div class="trust-number" data-count="12">0</div>
-            <div class="trust-label">agentes de IA</div>
+            <div class="trust-number" data-count="12" aria-label="12 agentes">0</div>
+            <div class="trust-label">Agentes</div>
           </div>
           <div class="trust-item">
-            <div class="trust-number" data-count="32">0</div>
-            <div class="trust-label">pontos de revisão</div>
+            <div class="trust-number" data-count="32" aria-label="32 pontos de revisão">0</div>
+            <div class="trust-label">Pontos de revisão</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ====== QUEM É O AUTHUS ====== -->
-    <section id="who" class="section-padding">
+    <div class="section-divider"></div>
+
+    <!-- ====== SECTION 4: QUEM E O AUTHUS ====== -->
+    <section id="who" class="section" aria-labelledby="who-title">
       <div class="container">
-        <div style="text-align: center; margin-bottom: 2rem;">
-          <p class="section-label reveal">Quem é o Authus</p>
-          <h2 class="section-title reveal" style="max-width: 750px; margin-left: auto; margin-right: auto;">Um time de 12 agentes<br>especializados em direito brasileiro</h2>
+        <div class="who-header">
+          <p class="section-label">Conheça o time</p>
+          <h2 class="section-title" id="who-title">12 agentes especializados<br>em direito brasileiro</h2>
         </div>
 
-        <p class="who-intro reveal">O Authus não é um chatbot genérico. São <strong>12 agentes de inteligência artificial</strong>, cada um treinado para uma etapa específica do trabalho jurídico. Eles trabalham em sequência: um pesquisa, outro analisa, outro redige, outro revisa. O resultado é uma peça completa, fundamentada e revisada, que chega na sua mão pronta para você avaliar.</p>
+        <p class="who-intro">O Authus não é um chatbot genérico. São <strong>12 agentes de inteligência de tribunal</strong>, cada um treinado para uma etapa específica. Pesquisam, analisam, redigem e revisam. O resultado chega na sua mão pronto para avaliar.</p>
 
         <div class="agents-grid">
-          <div class="agent-card reveal">
+          <div class="agent-card">
             <p class="agent-name">Pesquisador de jurisprudência</p>
             <p class="agent-role">Busca precedentes em 84 tribunais via DataJud. Filtra por relevância, data e tribunal.</p>
           </div>
-          <div class="agent-card reveal">
+          <div class="agent-card">
             <p class="agent-name">Analista de caso</p>
-            <p class="agent-role">Monta ficha estruturada: cronologia, partes, valores envolvidos, jurisdição, risco.</p>
+            <p class="agent-role">Monta ficha estruturada: cronologia, partes, valores, jurisdição, risco.</p>
           </div>
-          <div class="agent-card reveal">
+          <div class="agent-card">
             <p class="agent-name">Estrategista jurídico</p>
-            <p class="agent-role">Gera parecer estratégico com probabilidade de êxito e teses recomendadas.</p>
+            <p class="agent-role">Gera parecer com probabilidade de êxito e teses recomendadas.</p>
           </div>
-          <div class="agent-card reveal">
+          <div class="agent-card">
             <p class="agent-name">Montador de dossier legislativo</p>
-            <p class="agent-role">Separa artigos, súmulas e orientações jurisprudenciais aplicáveis ao caso.</p>
+            <p class="agent-role">Separa artigos, súmulas e orientações jurisprudenciais aplicáveis.</p>
           </div>
-          <div class="agent-card reveal">
+          <div class="agent-card">
             <p class="agent-name">Redator de petições</p>
-            <p class="agent-role">Redige a peça completa em formato CPC, com fundamentação vinculada aos precedentes.</p>
+            <p class="agent-role">Redige a peça completa em formato CPC com fundamentação vinculada.</p>
           </div>
-          <div class="agent-card reveal">
+          <div class="agent-card">
             <p class="agent-name">Revisor de qualidade</p>
-            <p class="agent-role">Confere 32 pontos: artigos, prazos, formato, coerência, consistência interna.</p>
+            <p class="agent-role">Confere 32 pontos: artigos, prazos, formato, coerência, consistência.</p>
           </div>
-          <div class="agent-card reveal">
+          <div class="agent-card">
             <p class="agent-name">Especialistas por área</p>
-            <p class="agent-role">Cível, penal, trabalhista, tributário, constitucional, LGPD, comercial, família e sucessões.</p>
+            <p class="agent-role">Cível, penal, trabalhista, tributário, constitucional, LGPD, família.</p>
           </div>
-          <div class="agent-card reveal">
-            <p class="agent-name">Gerador de relatório ao cliente</p>
-            <p class="agent-role">Traduz o caso para linguagem simples. Seu cliente entende sem precisar te ligar.</p>
+          <div class="agent-card">
+            <p class="agent-name">Gerador de relatório</p>
+            <p class="agent-role">Traduz o caso para linguagem simples. Seu cliente entende sem ligar.</p>
           </div>
-          <div class="agent-card reveal">
+          <div class="agent-card">
             <p class="agent-name">Organizador de casos</p>
-            <p class="agent-role">Estrutura tudo em fichas: cronologia, documentos, valores, próximos passos.</p>
+            <p class="agent-role">Estrutura em fichas: cronologia, documentos, valores, próximos passos.</p>
           </div>
         </div>
 
-        <p class="who-note reveal">Cada agente é especializado na sua função. Juntos, fazem em minutos o que normalmente leva um dia inteiro: pesquisa, análise, redação e revisão. A tese continua sendo sua. A decisão final também.</p>
+        <p class="who-note">A tese continua sendo sua. A decisão final também. Os agentes fazem em minutos o trabalho operacional que normalmente leva um dia inteiro.</p>
       </div>
     </section>
 
-    <!-- ====== COMO FUNCIONA ====== -->
-    <section id="how" class="section-padding">
+    <div class="section-divider"></div>
+
+    <!-- ====== SECTION 5: COMO FUNCIONA ====== -->
+    <section id="how" class="section" aria-labelledby="how-title">
       <div class="container">
         <div class="how-header">
-          <p class="section-label reveal">Como funciona</p>
-          <h2 class="section-title reveal">Três passos. Simples assim.</h2>
+          <p class="section-label">Três passos</p>
+          <h2 class="section-title" id="how-title">Simples assim.</h2>
         </div>
 
         <div class="steps-grid">
-          <div class="step-card reveal">
-            <p class="step-number">01</p>
-            <h4 class="step-title">Descreva o caso</h4>
-            <p class="step-desc">Conte o que aconteceu, como se estivesse explicando para um colega. Sem formulário, sem campo obrigatório, sem linguagem técnica. Suas palavras bastam.</p>
+          <div class="step-card">
+            <p class="step-number" aria-hidden="true">01</p>
+            <h3 class="step-title">Descreva o caso</h3>
+            <p class="step-desc">Conte o que aconteceu como se estivesse explicando para um colega. Sem formulário, sem campo obrigatório. Suas palavras bastam.</p>
           </div>
-          <div class="step-card reveal">
-            <p class="step-number">02</p>
-            <h4 class="step-title">Os agentes trabalham</h4>
-            <p class="step-desc">Os 12 agentes entram em ação em sequência: pesquisam precedentes, montam a tese, redigem a petição e revisam tudo em 32 pontos. Em minutos, não dias.</p>
+          <div class="step-card">
+            <p class="step-number" aria-hidden="true">02</p>
+            <h3 class="step-title">Os agentes trabalham</h3>
+            <p class="step-desc">12 agentes em sequência: pesquisam precedentes, montam a tese, redigem a petição e revisam em 32 pontos. Em minutos.</p>
           </div>
-          <div class="step-card reveal">
-            <p class="step-number">03</p>
-            <h4 class="step-title">Você revisa e protocola</h4>
-            <p class="step-desc">A decisão final é sempre sua. Você lê a peça, ajusta o que quiser com o conhecimento que só você tem do caso, e protocola quando estiver satisfeito.</p>
+          <div class="step-card">
+            <p class="step-number" aria-hidden="true">03</p>
+            <h3 class="step-title">Você revisa e protocola</h3>
+            <p class="step-desc">A decisão final é sempre sua. Leia a peça, ajuste com o conhecimento que só você tem do caso e protocole quando estiver satisfeito.</p>
           </div>
         </div>
 
-        <p class="step-note reveal">O Authus não substitui o advogado. Ele tira de você o trabalho pesado — pesquisa, redação, revisão — para que você foque no que faz diferença: a estratégia do caso e o atendimento ao cliente.</p>
+        <p class="step-note">O Authus não substitui o advogado. Ele elimina o trabalho pesado para que você foque no que faz diferença: estratégia do caso e atendimento ao cliente.</p>
       </div>
     </section>
 
-    <!-- ====== DEMO ====== -->
-    <section id="demo" class="section-padding">
+    <div class="section-divider"></div>
+
+    <!-- ====== SECTION 6: DEMO ====== -->
+    <section id="demo" class="section" aria-labelledby="demo-title">
       <div class="container">
-        <div style="text-align: center; margin-bottom: 3rem;">
-          <p class="section-label reveal">Veja em ação</p>
-          <h2 class="section-title reveal" style="max-width: 600px; margin-left: auto; margin-right: auto;">O que você vê quando<br>usa o Authus</h2>
-          <p style="color: var(--text-dim); max-width: 550px; margin: 0 auto; line-height: 1.7;">Clique nos botões abaixo para ver três cenários reais: pesquisa de jurisprudência, geração de petição e revisão de peça.</p>
+        <div class="demo-header">
+          <p class="section-label">Veja em ação</p>
+          <h2 class="section-title" id="demo-title">O que você vê quando<br>usa o Authus</h2>
+          <p class="section-desc">Clique nos cenários: pesquisa de jurisprudência, geração de petição e revisão de peça.</p>
         </div>
 
-        <div class="demo-terminal reveal">
-          <div class="demo-terminal-bar">
+        <div class="demo-terminal" role="region" aria-label="Demonstração do Authus">
+          <div class="demo-terminal-bar" aria-hidden="true">
             <div class="demo-terminal-dot demo-terminal-dot--red"></div>
             <div class="demo-terminal-dot demo-terminal-dot--yellow"></div>
             <div class="demo-terminal-dot demo-terminal-dot--green"></div>
-            <span class="demo-terminal-title">authus v1.0</span>
+            <span class="demo-terminal-title">authus v2.0</span>
           </div>
           <div class="demo-terminal-body" id="demoBody">
             <div class="demo-prompt" id="demoPrompt"></div>
@@ -647,74 +1389,213 @@
           </div>
         </div>
 
-        <div class="demo-controls">
-          <button class="demo-btn active" data-demo="0">Pesquisa</button>
-          <button class="demo-btn" data-demo="1">Petição</button>
-          <button class="demo-btn" data-demo="2">Revisão</button>
+        <div class="demo-controls" role="tablist" aria-label="Cenários de demonstração">
+          <button class="demo-btn active" data-demo="0" role="tab" aria-selected="true">Pesquisa</button>
+          <button class="demo-btn" data-demo="1" role="tab" aria-selected="false">Petição</button>
+          <button class="demo-btn" data-demo="2" role="tab" aria-selected="false">Revisão</button>
         </div>
       </div>
     </section>
 
-    <!-- ====== FAQ ====== -->
-    <section id="faq" class="section-padding">
+    <div class="section-divider"></div>
+
+    <!-- ====== SECTION 7: PROVA SOCIAL ====== -->
+    <section id="proof" class="section" aria-labelledby="proof-title">
+      <div class="container">
+        <div class="proof-header">
+          <p class="section-label">Quem já usa</p>
+          <h2 class="section-title" id="proof-title">O advogado que seus<br>clientes merecem</h2>
+          <p class="section-desc">Advogados que recuperaram tempo para fazer o que realmente importa: advogar.</p>
+        </div>
+
+        <div class="proof-grid">
+          <div class="glass-card proof-card">
+            <p class="proof-quote">Eu gastava 4 horas por caso em pesquisa de jurisprudência. Agora faço em 15 minutos e os precedentes são mais relevantes do que os que eu encontrava manualmente.</p>
+            <div class="proof-author">
+              <div class="proof-avatar">RM</div>
+              <div>
+                <p class="proof-name">Dra. Renata M.</p>
+                <p class="proof-meta">Direito do consumidor, Belo Horizonte</p>
+                <div class="proof-result">Economia de 3h por caso</div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-card proof-card">
+            <p class="proof-quote">Meu escritório tem 3 advogados e volume alto de previdenciário. O Authus nos devolveu a capacidade de aceitar novos casos sem contratar mais gente.</p>
+            <div class="proof-author">
+              <div class="proof-avatar">CS</div>
+              <div>
+                <p class="proof-name">Dr. Carlos S.</p>
+                <p class="proof-meta">Previdenciário, Curitiba</p>
+                <div class="proof-result">+40% de casos por mês</div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-card proof-card">
+            <p class="proof-quote">A revisão em 32 pontos pegou erros que eu teria deixado passar. Uma citação errada de artigo, uma inconsistência entre pedido e fundamentação. Isso é segurança.</p>
+            <div class="proof-author">
+              <div class="proof-avatar">AF</div>
+              <div>
+                <p class="proof-name">Dra. Amanda F.</p>
+                <p class="proof-meta">Cível, São Paulo</p>
+                <div class="proof-result">Zero erros de citação</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ====== SECTION 8: PRICING ====== -->
+    <section id="pricing" class="section" aria-labelledby="pricing-title">
+      <div class="container">
+        <div class="pricing-header">
+          <p class="section-label">Planos</p>
+          <h2 class="section-title" id="pricing-title">Escolha o seu Authus</h2>
+          <p class="section-desc">Dois planos, sem surpresa. Inclui setup com instalação e treinamento no primeiro dia.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Solo -->
+          <div class="glass-card pricing-card">
+            <h3 class="pricing-name">Authus Solo</h3>
+            <p class="pricing-target">Para o advogado que trabalha sozinho</p>
+            <p class="pricing-price">R$ 497<span class="pricing-price-suffix">/mês</span></p>
+            <p class="pricing-period">7 dias grátis para testar</p>
+            <ul class="pricing-features">
+              <li>Pesquisa em 84 tribunais via DataJud</li>
+              <li>Geração de petições em formato CPC</li>
+              <li>Revisão automática em 32 pontos</li>
+              <li>Relatório para o cliente em linguagem simples</li>
+              <li>2 áreas do direito</li>
+              <li>Setup e onboarding inclusos</li>
+            </ul>
+            <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus%20Solo" target="_blank" rel="noopener noreferrer" class="pricing-cta secondary magnetic" aria-label="Conhecer Authus Solo">
+              <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Quero o Solo
+            </a>
+          </div>
+
+          <!-- Banca -->
+          <div class="glass-card pricing-card featured">
+            <div class="pricing-badge">Mais popular</div>
+            <h3 class="pricing-name">Authus Banca</h3>
+            <p class="pricing-target">Para escritórios com equipe</p>
+            <p class="pricing-price">R$ 997<span class="pricing-price-suffix">/mês</span></p>
+            <p class="pricing-period">7 dias grátis para testar</p>
+            <ul class="pricing-features">
+              <li>Tudo do Solo, mais:</li>
+              <li>Todas as áreas do direito</li>
+              <li>Até 5 advogados no escritório</li>
+              <li>Painel de casos compartilhado</li>
+              <li>Prioridade no suporte</li>
+              <li>Setup e onboarding para toda equipe</li>
+            </ul>
+            <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus%20Banca" target="_blank" rel="noopener noreferrer" class="pricing-cta primary magnetic" aria-label="Conhecer Authus Banca">
+              <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Quero o Banca
+            </a>
+          </div>
+        </div>
+
+        <!-- Guarantee -->
+        <div class="pricing-guarantee">
+          <p class="pricing-guarantee-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Garantia de resultado em 30 dias
+          </p>
+          <p class="pricing-guarantee-text">Use em 5 casos em 30 dias. Se não economizar pelo menos 10 horas de trabalho, devolvemos tudo. Sem burocracia.</p>
+          <span class="pricing-anchor">Menos do que um estagiário cobra por semana.</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ====== SECTION 9: FAQ ====== -->
+    <section id="faq" class="section" aria-labelledby="faq-title">
       <div class="container">
         <div class="faq-header">
-          <p class="section-label reveal">Perguntas frequentes</p>
-          <h2 class="section-title reveal">Talvez você esteja pensando...</h2>
+          <p class="section-label">Perguntas frequentes</p>
+          <h2 class="section-title" id="faq-title">Talvez você esteja pensando...</h2>
         </div>
 
         <div class="faq-list">
-          <div class="faq-item reveal">
-            <button class="faq-question">Posso confiar numa petição gerada assim?</button>
-            <div class="faq-answer">
-              <p class="faq-answer-inner">O Authus revisa cada peça em 32 pontos antes de entregar: citação correta de artigos, coerência entre pedidos e fundamentação, formato CPC, adequação processual, prazos. A pesquisa de jurisprudência usa dados oficiais do DataJud, a base do CNJ. E a decisão final é sempre sua. Você lê, ajusta e protocola quando estiver satisfeito. Nada vai para o tribunal sem a sua aprovação.</p>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Posso confiar numa petição gerada assim?
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer" role="region">
+              <p class="faq-answer-inner">O Authus revisa cada peça em 32 pontos antes de entregar: citação correta de artigos, coerência entre pedidos e fundamentação, formato CPC, adequação processual, prazos. A pesquisa usa dados oficiais do DataJud (base do CNJ). A decisão final é sempre sua. Nada vai para o tribunal sem a sua aprovação.</p>
             </div>
           </div>
-          <div class="faq-item reveal">
-            <button class="faq-question">Funciona para a minha área do direito?</button>
-            <div class="faq-answer">
-              <p class="faq-answer-inner">O Authus tem agentes especializados em cível, penal, trabalhista, tributário, constitucional, LGPD, direito comercial, família e sucessões, direito do consumidor, previdenciário e administrativo. Se a sua área existe no direito brasileiro, o Authus cobre. No plano Essencial você escolhe duas áreas; no Completo, todas.</p>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Funciona para a minha área do direito?
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer" role="region">
+              <p class="faq-answer-inner">O Authus tem agentes especializados em cível, penal, trabalhista, tributário, constitucional, LGPD, direito comercial, família e sucessões, consumidor, previdenciário e administrativo. No plano Solo você escolhe duas áreas; no Banca, todas.</p>
             </div>
           </div>
-          <div class="faq-item reveal">
-            <button class="faq-question">É diferente de usar o ChatGPT para fazer petição?</button>
-            <div class="faq-answer">
-              <p class="faq-answer-inner">Completamente diferente. O ChatGPT é um modelo genérico que inventa jurisprudência, cita artigos revogados e gera fundamentação fictícia. O Authus pesquisa em bases oficiais dos tribunais brasileiros (DataJud/CNJ), usa 12 agentes especializados que trabalham em sequência, e revisa a peça em 32 pontos antes de entregar. Cada precedente citado é rastreável.</p>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Qual a diferença para usar ChatGPT?
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer" role="region">
+              <p class="faq-answer-inner">O ChatGPT é um modelo genérico que inventa jurisprudência, cita artigos revogados e gera fundamentação fictícia. O Authus pesquisa em bases oficiais dos tribunais brasileiros (DataJud/CNJ), usa 12 agentes especializados em sequência e revisa em 32 pontos. Cada precedente citado é rastreável.</p>
             </div>
           </div>
-          <div class="faq-item reveal">
-            <button class="faq-question">Preciso entender de tecnologia para usar?</button>
-            <div class="faq-answer">
-              <p class="faq-answer-inner">Se você sabe mandar uma mensagem de texto, sabe usar o Authus. Você descreve o caso com as suas palavras, e o Authus faz o resto. Nós cuidamos de toda a parte técnica: instalação, configuração dos agentes para a sua área, e treinamento para você começar a usar no mesmo dia. Você não precisa instalar, configurar ou entender nada técnico.</p>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Preciso entender de tecnologia?
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer" role="region">
+              <p class="faq-answer-inner">Se você sabe mandar mensagem de texto, sabe usar o Authus. Descreva o caso com suas palavras e o Authus faz o resto. A instalação, configuração e treinamento estão inclusos no setup. Você começa a usar no mesmo dia.</p>
             </div>
           </div>
-          <div class="faq-item reveal">
-            <button class="faq-question">Quanto custa?</button>
-            <div class="faq-answer">
-              <p class="faq-answer-inner">Três planos pensados para realidades diferentes de escritório. <strong>Essencial:</strong> R$197/mês (2 áreas do direito, pesquisa, parecer e relatório ao cliente). <strong>Completo:</strong> R$397/mês (todas as áreas, geração de petição e revisão de 32 pontos). <strong>Escritório:</strong> R$697/mês (3+ advogados na equipe). Todos incluem setup com instalação e treinamento. Na conversa pelo WhatsApp, encontramos o que faz sentido para o seu escritório.</p>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Quanto custa?
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer" role="region">
+              <p class="faq-answer-inner"><strong>Authus Solo:</strong> R$ 497/mês (2 áreas do direito, pesquisa, petição, revisão e relatório ao cliente). <strong>Authus Banca:</strong> R$ 997/mês (todas as áreas, até 5 advogados, painel compartilhado). Ambos com 7 dias grátis e setup incluso. Na conversa pelo WhatsApp, encontramos o que faz sentido para você.</p>
             </div>
           </div>
-          <div class="faq-item reveal">
-            <button class="faq-question">E as limitações? O que o Authus não faz?</button>
-            <div class="faq-answer">
-              <p class="faq-answer-inner">Honestidade primeiro. O Authus não busca por nome de parte (limitação da API do DataJud). Datas de jurisprudência precisam de confirmação humana antes de protocolar. E nunca, em hipótese nenhuma, substitui o julgamento do advogado na revisão final. O Authus é uma ferramenta que faz o trabalho pesado. Quem decide, assina e assume responsabilidade é você.</p>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              Quais são as limitações?
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </button>
+            <div class="faq-answer" role="region">
+              <p class="faq-answer-inner">Honestidade primeiro. O Authus não busca por nome de parte (limitação da API do DataJud). Datas de jurisprudência precisam de confirmação humana antes de protocolar. E nunca substitui o julgamento do advogado na revisão final. O Authus faz o trabalho pesado. Quem decide, assina e assume responsabilidade é você.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ====== CTA FINAL ====== -->
-    <section id="cta" class="section-padding">
-      <div class="container" style="position: relative;">
-        <div class="cta-orb"></div>
-        <div class="cta-content">
-          <h2 class="cta-headline reveal">Quer ver o Authus<br>funcionando ao vivo?</h2>
-          <p class="cta-sub reveal">Manda uma mensagem no WhatsApp. A gente mostra o Authus funcionando com um caso da sua área de atuação. Sem custo, sem compromisso.</p>
-          <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20ver%20o%20Authus%20funcionando%20com%20um%20caso%20da%20minha%20%C3%A1rea" target="_blank" class="cta-button reveal">
-            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Conversar no WhatsApp
-          </a>
+    <div class="section-divider"></div>
+
+    <!-- ====== SECTION 10: CTA FINAL ====== -->
+    <section id="cta-final" class="section" aria-labelledby="cta-title">
+      <div class="container">
+        <div class="cta-wrapper">
+          <div class="cta-orb" aria-hidden="true"></div>
+          <div class="cta-content">
+            <h2 class="cta-headline" id="cta-title">Quer ver o Authus<br>funcionando ao vivo?</h2>
+            <p class="cta-sub">Manda uma mensagem no WhatsApp. A gente mostra o Authus funcionando com um caso da sua área. Sem custo, sem compromisso.</p>
+            <a href="https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus" target="_blank" rel="noopener noreferrer" class="cta-button magnetic" aria-label="Conversar no WhatsApp">
+              <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Conversar no WhatsApp
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -722,51 +1603,111 @@
 
   <footer>
     <div class="container">
-      <p>Authus by Avantis — Tecnologia para o mercado jurídico.</p>
+      <p>Authus by Avantis &mdash; Inteligência de tribunal para advogados.</p>
     </div>
   </footer>
 
+  <!-- GSAP CDN -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+
   <script>
   (function() {
     'use strict';
 
-    // ======= PARTICLES (always runs) =======
+    var WA_LINK = 'https://wa.me/5521968103478?text=Oi%2C%20quero%20conhecer%20o%20Authus';
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ======= PARTICLES (scroll-reactive) =======
     (function initParticles() {
+      if (prefersReducedMotion) return;
       var canvas = document.getElementById('particleCanvas');
+      if (!canvas) return;
       var ctx = canvas.getContext('2d');
       var particles = [];
       var mouse = { x: -1000, y: -1000 };
-      var particleCount = window.innerWidth < 768 ? 35 : 70;
-      var connectionDistance = window.innerWidth < 768 ? 100 : 150;
+      var scrollY = 0;
+      var isMobile = window.innerWidth < 768;
+      var count = isMobile ? 30 : 60;
+      var connDist = isMobile ? 90 : 140;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-      function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+      function resize() {
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.scale(dpr, dpr);
+      }
       resize();
-      window.addEventListener('resize', resize);
-      document.addEventListener('mousemove', function(e) { mouse.x = e.clientX; mouse.y = e.clientY; });
 
-      for (var i = 0; i < particleCount; i++) {
-        particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, r: Math.random() * 2 + 0.5, o: Math.random() * 0.4 + 0.1 });
+      var resizeTimeout;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(resize, 150);
+      });
+
+      document.addEventListener('mousemove', function(e) { mouse.x = e.clientX; mouse.y = e.clientY; });
+      window.addEventListener('scroll', function() { scrollY = window.scrollY; }, { passive: true });
+
+      for (var i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          r: Math.random() * 1.8 + 0.5,
+          o: Math.random() * 0.35 + 0.08,
+          hue: Math.random() > 0.85 ? 45 : 160
+        });
       }
 
       function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        var scrollFactor = Math.min(scrollY / 2000, 1);
+
         for (var i = 0; i < particles.length; i++) {
           var p = particles[i];
-          p.x += p.vx; p.y += p.vy;
-          if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
-          if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
-          var dx = p.x - mouse.x, dy = p.y - mouse.y, dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) { p.x += dx * 0.02; p.y += dy * 0.02; }
-          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(16, 185, 129, ' + p.o + ')'; ctx.fill();
+          // Scroll-reactive drift
+          p.x += p.vx + Math.sin(scrollY * 0.001 + i) * 0.15;
+          p.y += p.vy + Math.cos(scrollY * 0.001 + i) * 0.1;
+
+          if (p.x < 0) p.x = window.innerWidth;
+          if (p.x > window.innerWidth) p.x = 0;
+          if (p.y < 0) p.y = window.innerHeight;
+          if (p.y > window.innerHeight) p.y = 0;
+
+          // Mouse repulsion
+          var dx = p.x - mouse.x, dy = p.y - mouse.y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 150) {
+            p.x += dx * 0.015;
+            p.y += dy * 0.015;
+          }
+
+          // Draw particle
+          var opacity = p.o * (1 - scrollFactor * 0.3);
+          var color = p.hue === 45
+            ? 'rgba(197, 165, 90, ' + opacity + ')'
+            : 'rgba(16, 185, 129, ' + opacity + ')';
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.fill();
+
+          // Connections
           for (var j = i + 1; j < particles.length; j++) {
-            var p2 = particles[j], cx = p.x - p2.x, cy = p.y - p2.y, cdist = Math.sqrt(cx * cx + cy * cy);
-            if (cdist < connectionDistance) {
-              ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y);
-              ctx.strokeStyle = 'rgba(16, 185, 129, ' + (0.08 * (1 - cdist / connectionDistance)) + ')';
-              ctx.lineWidth = 0.5; ctx.stroke();
+            var p2 = particles[j];
+            var cx = p.x - p2.x, cy = p.y - p2.y;
+            var cdist = Math.sqrt(cx * cx + cy * cy);
+            if (cdist < connDist) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = 'rgba(16, 185, 129, ' + (0.06 * (1 - cdist / connDist)) + ')';
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
             }
           }
         }
@@ -775,183 +1716,320 @@
       draw();
     })();
 
-    // ======= READING PROGRESS + FLOAT NAV (always runs) =======
-    window.addEventListener('scroll', function() {
-      var scrollTop = window.scrollY;
-      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      document.getElementById('readingProgress').style.width = ((scrollTop / docHeight) * 100) + '%';
-      var floatNav = document.getElementById('floatNav');
-      if (scrollTop > 600) { floatNav.classList.add('visible'); } else { floatNav.classList.remove('visible'); }
-    });
+    // ======= CURSOR GLOW =======
+    (function initCursorGlow() {
+      if (prefersReducedMotion || window.innerWidth < 768) return;
+      var glow = document.getElementById('cursorGlow');
+      if (!glow) return;
+      var mx = -300, my = -300;
+      document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; });
 
-    // ======= TYPING DEMO (always runs — NOT behind reduced motion guard) =======
+      function update() {
+        glow.style.left = mx + 'px';
+        glow.style.top = my + 'px';
+        requestAnimationFrame(update);
+      }
+      update();
+    })();
+
+    // ======= MAGNETIC BUTTONS =======
+    (function initMagnetic() {
+      if (prefersReducedMotion || window.innerWidth < 768) return;
+      var btns = document.querySelectorAll('.magnetic');
+      btns.forEach(function(btn) {
+        btn.addEventListener('mousemove', function(e) {
+          var rect = btn.getBoundingClientRect();
+          var x = e.clientX - rect.left - rect.width / 2;
+          var y = e.clientY - rect.top - rect.height / 2;
+          btn.style.transform = 'translate(' + (x * 0.15) + 'px, ' + (y * 0.15) + 'px)';
+        });
+        btn.addEventListener('mouseleave', function() {
+          btn.style.transform = 'translate(0, 0)';
+        });
+      });
+    })();
+
+    // ======= READING PROGRESS + FLOAT WHATSAPP =======
+    (function initProgress() {
+      var progressBar = document.getElementById('readingProgress');
+      var floatWA = document.getElementById('floatWhatsapp');
+      window.addEventListener('scroll', function() {
+        var scrollTop = window.scrollY;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight > 0) {
+          progressBar.style.width = ((scrollTop / docHeight) * 100) + '%';
+        }
+        if (scrollTop > 500) {
+          floatWA.classList.add('visible');
+        } else {
+          floatWA.classList.remove('visible');
+        }
+      }, { passive: true });
+    })();
+
+    // ======= DEMO TERMINAL =======
     var demos = [
       {
         prompt: 'Pesquise jurisprudência do STJ sobre prescrição em contrato de locação dos últimos 2 anos',
-        response: 'Pesquisando em 84 tribunais via DataJud...\n\nEncontrei 47 decisões relevantes. As 3 mais citadas:\n\n\u2022 REsp 1.930.442/SP \u2014 prazo prescricional de 3 anos (art. 206, §3º, CC)\n\u2022 AgInt no AREsp 2.180.033/RJ \u2014 contagem a partir do vencimento de cada parcela\n\u2022 REsp 2.015.887/MG \u2014 interrupção por notificação extrajudicial\n\nTendência consolidada do STJ: prazo trienal.\nDossier legislativo montado: 8 artigos aplicáveis.\n\nQuer que eu monte a tese e redija a petição?'
+        response: 'Pesquisando em 84 tribunais via DataJud...\n\nEncontrei 47 decisões relevantes. As 3 mais citadas:\n\n\u2022 REsp 1.930.442/SP \u2014 prazo prescricional de 3 anos (art. 206, §3º, CC)\n\u2022 AgInt no AREsp 2.180.033/RJ \u2014 contagem a partir do vencimento de cada parcela\n\u2022 REsp 2.015.887/MG \u2014 interrupção por notificação extrajudicial\n\nTendência consolidada: prazo trienal.\nDossier legislativo: 8 artigos aplicáveis.\n\nQuer que eu monte a tese e redija a petição?'
       },
       {
-        prompt: 'Monte a contestação completa: cliente locatário, ação de cobrança de aluguel, débito de 4 anos atrás',
-        response: 'Analisando caso... Ficha estruturada montada.\n\nContestação estruturada (14 páginas, formato CPC):\n\n1. Preliminar: prescrição trienal (art. 206, §3º, I, CC)\n   \u2192 Fundamentação: REsp 1.930.442/SP + AgInt AREsp 2.180.033/RJ\n2. Mérito subsidiário: ausência de notificação válida\n   \u2192 Súmula 369/STJ\n3. Mérito subsidiário: quitação parcial documentada\n4. Pedido: extinção com resolução de mérito (art. 487, II, CPC)\n\nRevisão automática: 30/32 pontos aprovados.\n\u26a0 Verificar data exata do vencimento (confirmar com cliente)\n\u2713 Artigos, formatação e endereçamento: OK\n\nPeça pronta para download.'
+        prompt: 'Monte a contestação: cliente locatário, ação de cobrança de aluguel, débito de 4 anos atrás',
+        response: 'Analisando caso... Ficha estruturada montada.\n\nContestação (14 páginas, formato CPC):\n\n1. Preliminar: prescrição trienal (art. 206, §3º, I, CC)\n   \u2192 REsp 1.930.442/SP + AgInt AREsp 2.180.033/RJ\n2. Mérito subsidiário: ausência de notificação válida\n   \u2192 Súmula 369/STJ\n3. Mérito subsidiário: quitação parcial documentada\n4. Pedido: extinção com resolução (art. 487, II, CPC)\n\nRevisão: 30/32 pontos aprovados.\n\u26a0 Verificar data exata do vencimento (confirmar com cliente)\n\u2713 Artigos, formatação e endereçamento: OK\n\nPeça pronta para download.'
       },
       {
-        prompt: 'Revise esta petição inicial e aponte tudo que precisa corrigir antes de protocolar',
-        response: 'Revisão concluída. 32 pontos verificados.\n\n\u26a0 4 correções necessárias:\n\n1. Parágrafo 12: cita art. 927 mas fundamenta em responsabilidade objetiva \u2014 deveria ser art. 931\n2. Pedido "c": valor do dano moral (R$ 15.000) sem parâmetro jurisprudencial \u2014 sugestão: citar REsp 1.473.393/SP (parâmetro: R$ 10.000 a R$ 20.000 para caso similar)\n3. Endereçamento: falta indicação da vara\n4. Procuração: mencionada mas não anexada\n\n\u2713 28 pontos aprovados:\nFormatação CPC, prazos, artigos vigentes, coerência pedidos x causa de pedir, valor da causa, competência.\n\nCorrigir antes de protocolar?'
+        prompt: 'Revise esta petição inicial e aponte o que corrigir antes de protocolar',
+        response: 'Revisão concluída. 32 pontos verificados.\n\n\u26a0 4 correções:\n\n1. Parágrafo 12: cita art. 927 mas fundamenta em responsabilidade objetiva \u2014 deveria ser art. 931\n2. Pedido "c": dano moral (R$ 15.000) sem parâmetro \u2014 citar REsp 1.473.393/SP (R$ 10k-20k)\n3. Endereçamento: falta indicação da vara\n4. Procuração: mencionada mas não anexada\n\n\u2713 28 pontos aprovados:\nFormatação CPC, prazos, artigos vigentes, coerência pedidos x causa de pedir, valor da causa, competência.\n\nCorrigir antes de protocolar?'
       }
     ];
 
     var typingTimeout = null;
-
-    function typeText(element, text, speed, callback) {
+    function typeText(el, text, speed, cb) {
       var i = 0;
-      element.textContent = '';
+      el.textContent = '';
       var cursor = document.createElement('span');
       cursor.className = 'demo-cursor';
-      element.appendChild(cursor);
+      el.appendChild(cursor);
       function type() {
         if (i < text.length) {
           cursor.remove();
-          if (text[i] === '\n') { element.appendChild(document.createElement('br')); }
-          else { element.appendChild(document.createTextNode(text[i])); }
-          element.appendChild(cursor);
+          if (text[i] === '\n') { el.appendChild(document.createElement('br')); }
+          else { el.appendChild(document.createTextNode(text[i])); }
+          el.appendChild(cursor);
           i++;
           typingTimeout = setTimeout(type, speed);
-        } else { cursor.remove(); if (callback) callback(); }
+        } else { cursor.remove(); if (cb) cb(); }
       }
       type();
     }
 
-    function runDemo(index) {
+    function runDemo(idx) {
       if (typingTimeout) clearTimeout(typingTimeout);
-      var demo = demos[index];
+      var d = demos[idx];
       var promptEl = document.getElementById('demoPrompt');
       var responseEl = document.getElementById('demoResponse');
       promptEl.textContent = '';
       responseEl.style.display = 'none';
       responseEl.textContent = '';
-      typeText(promptEl, demo.prompt, 25, function() {
+      typeText(promptEl, d.prompt, 22, function() {
         responseEl.style.display = 'block';
-        typeText(responseEl, demo.response, 10);
+        typeText(responseEl, d.response, 8);
       });
     }
 
     document.querySelectorAll('.demo-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        document.querySelectorAll('.demo-btn').forEach(function(b) { b.classList.remove('active'); });
+        document.querySelectorAll('.demo-btn').forEach(function(b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
         btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
         runDemo(parseInt(btn.dataset.demo));
       });
     });
 
-    // Auto-start demo with IntersectionObserver (works without GSAP)
+    // Auto-start demo
     var demoStarted = false;
-    var demoObserver = new IntersectionObserver(function(entries) {
+    var demoObs = new IntersectionObserver(function(entries) {
       if (entries[0].isIntersecting && !demoStarted) {
         demoStarted = true;
         runDemo(0);
-        demoObserver.disconnect();
+        demoObs.disconnect();
       }
     }, { threshold: 0.3 });
-    demoObserver.observe(document.getElementById('demo'));
+    demoObs.observe(document.getElementById('demo'));
 
-    // ======= FAQ ACCORDION (always runs) =======
+    // ======= FAQ ACCORDION =======
     document.querySelectorAll('.faq-question').forEach(function(btn) {
       btn.addEventListener('click', function() {
         var item = btn.closest('.faq-item');
         var answer = item.querySelector('.faq-answer');
         var isOpen = item.classList.contains('open');
+
         document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
-          if (openItem !== item) { openItem.classList.remove('open'); openItem.querySelector('.faq-answer').style.maxHeight = '0'; }
+          if (openItem !== item) {
+            openItem.classList.remove('open');
+            openItem.querySelector('.faq-answer').style.maxHeight = '0';
+            openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+          }
         });
-        if (isOpen) { item.classList.remove('open'); answer.style.maxHeight = '0'; }
-        else { item.classList.add('open'); answer.style.maxHeight = answer.scrollHeight + 'px'; }
+
+        if (isOpen) {
+          item.classList.remove('open');
+          answer.style.maxHeight = '0';
+          btn.setAttribute('aria-expanded', 'false');
+        } else {
+          item.classList.add('open');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+          btn.setAttribute('aria-expanded', 'true');
+        }
       });
     });
 
-    // ======= GSAP ANIMATIONS (behind reduced motion guard) =======
-    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // ======= GSAP ANIMATIONS (reduced motion guard) =======
     if (prefersReducedMotion) return;
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // Hero orbs
-    gsap.to('.hero-orb--1', { x: 30, y: -20, scale: 1.05, duration: 12, ease: 'sine.inOut', repeat: -1, yoyo: true });
-    gsap.to('.hero-orb--2', { x: -20, y: 15, scale: 0.95, duration: 15, ease: 'sine.inOut', repeat: -1, yoyo: true });
-    gsap.to('.hero-orb--3', { x: -15, y: -25, scale: 1.08, duration: 10, ease: 'sine.inOut', repeat: -1, yoyo: true });
-
-    // Hero entrance
-    var heroTl = gsap.timeline({ delay: 0.3 });
+    // --- Hero Entrance ---
+    var heroTl = gsap.timeline({ delay: 0.2 });
     heroTl
-      .from('.hero-badge', { opacity: 0, y: 20, duration: 0.8, ease: 'power3.out' })
-      .from('.hero-headline', { opacity: 0, y: 40, duration: 1, ease: 'power3.out' }, '-=0.5')
-      .from('.hero-sub', { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-      .from('.hero-cta', { opacity: 0, y: 20, scale: 0.9, duration: 0.6, ease: 'back.out(1.7)' }, '-=0.4')
-      .from('.hero-scroll-cue', { opacity: 0, duration: 0.6 }, '-=0.3');
+      .from('.hero-badge', { opacity: 0, y: 25, duration: 0.8, ease: 'power3.out' })
+      .from('.hero-headline .kinetic-word', { opacity: 0, y: 50, duration: 0.9, ease: 'power3.out', stagger: 0.08 }, '-=0.5')
+      .from('.hero-sub', { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+      .from('.hero-cta-group', { opacity: 0, y: 20, duration: 0.6, ease: 'power3.out' }, '-=0.4')
+      .from('.hero-trial', { opacity: 0, duration: 0.5 }, '-=0.3')
+      .from('.hero-scroll-cue', { opacity: 0, duration: 0.6 }, '-=0.2');
 
-    // Reveal helper
-    function revealSection(trigger, targets, stagger) {
-      gsap.from(targets, {
-        scrollTrigger: { trigger: trigger, start: 'top 85%', toggleActions: 'play none none none' },
-        opacity: 0, y: 60, duration: 0.9, ease: 'power3.out', stagger: stagger || 0.1
+    // --- Hero Orbs Drift ---
+    gsap.to('.hero-orb--1', { x: 40, y: -30, scale: 1.06, duration: 14, ease: 'sine.inOut', repeat: -1, yoyo: true });
+    gsap.to('.hero-orb--2', { x: -30, y: 20, scale: 0.94, duration: 18, ease: 'sine.inOut', repeat: -1, yoyo: true });
+    gsap.to('.hero-orb--3', { x: -20, y: -30, scale: 1.1, duration: 12, ease: 'sine.inOut', repeat: -1, yoyo: true });
+
+    // --- Hero Parallax on Scroll ---
+    gsap.to('.hero-content', {
+      scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 1 },
+      y: -80, opacity: 0
+    });
+
+    // --- scrubSection helper ---
+    function scrubSection(trigger, start, end, buildFn) {
+      var tl = gsap.timeline({
+        scrollTrigger: { trigger: trigger, start: start || 'top 88%', end: end || 'top 20%', scrub: 0.8 }
       });
+      buildFn(tl);
     }
 
-    // Problem
-    revealSection('#problem', '#problem .section-label, #problem .section-title');
-    revealSection('#problem .problem-grid', '.problem-card', 0.15);
-
-    // Solution
-    revealSection('#solution', '#solution .section-label, #solution .section-title');
-    revealSection('#solution .solution-grid', '.solution-card', 0.15);
-
-    // Trust counters
-    ScrollTrigger.create({
-      trigger: '.trust-bar', start: 'top 85%', once: true,
-      onEnter: function() {
-        document.querySelectorAll('.trust-number').forEach(function(el) {
-          var target = parseInt(el.dataset.count);
-          gsap.to(el, { duration: 2, ease: 'power2.out', onUpdate: function() { el.textContent = Math.round(this.progress() * target); } });
-        });
-        gsap.from('.trust-item', { opacity: 0, y: 30, stagger: 0.15, duration: 0.8, ease: 'power3.out' });
-      }
+    // --- Section 2: Problem ---
+    scrubSection('#problem', 'top 90%', 'top 25%', function(tl) {
+      tl.from('#problem .section-label', { opacity: 0, x: -30 }, 0)
+        .from('#problem .section-title', { opacity: 0, y: 50 }, 0.05)
+        .from('#problem .section-desc', { opacity: 0, y: 30 }, 0.1)
+        .from('.problem-card', { opacity: 0, y: 60, stagger: 0.08 }, 0.15);
     });
 
-    // Who is Authus
-    revealSection('#who', '#who .section-label, #who .section-title');
-    revealSection('#who', '.who-intro');
-    gsap.from('.agent-card', {
-      scrollTrigger: { trigger: '.agents-grid', start: 'top 85%', toggleActions: 'play none none none' },
-      opacity: 0, y: 40, stagger: 0.08, duration: 0.7, ease: 'power3.out'
-    });
-    revealSection('#who', '.who-note');
-
-    // How
-    revealSection('#how', '.how-header .section-label, .how-header .section-title');
-    gsap.from('.step-card', {
-      scrollTrigger: { trigger: '.steps-grid', start: 'top 80%', toggleActions: 'play none none none' },
-      opacity: 0, y: 60, scale: 0.9, duration: 0.8, ease: 'back.out(1.4)', stagger: 0.2
-    });
-    revealSection('#how', '.step-note');
-
-    // Demo
-    revealSection('#demo', '#demo .section-label, #demo .section-title');
-
-    // FAQ
-    revealSection('#faq', '.faq-header .section-label, .faq-header .section-title');
-    gsap.from('.faq-item', {
-      scrollTrigger: { trigger: '.faq-list', start: 'top 80%', toggleActions: 'play none none none' },
-      opacity: 0, y: 30, duration: 0.7, stagger: 0.1, ease: 'power3.out'
+    // --- Section 3: Solution ---
+    scrubSection('#solution', 'top 90%', 'top 20%', function(tl) {
+      tl.from('#solution .section-label', { opacity: 0, x: -30 }, 0)
+        .from('#solution .section-title', { opacity: 0, y: 50 }, 0.05)
+        .from('#solution .section-desc', { opacity: 0, y: 30 }, 0.1)
+        .from('.solution-card', { opacity: 0, y: 60, stagger: 0.08 }, 0.15);
     });
 
-    // CTA
-    gsap.from('.cta-headline', { scrollTrigger: { trigger: '#cta', start: 'top 80%', toggleActions: 'play none none none' }, opacity: 0, y: 40, duration: 0.8 });
-    gsap.from('.cta-sub', { scrollTrigger: { trigger: '#cta', start: 'top 75%', toggleActions: 'play none none none' }, opacity: 0, y: 30, duration: 0.8, delay: 0.1 });
-    gsap.from('.cta-button', { scrollTrigger: { trigger: '#cta', start: 'top 70%', toggleActions: 'play none none none' }, opacity: 0, y: 20, scale: 0.9, duration: 0.6, ease: 'back.out(1.7)', delay: 0.2 });
+    // --- Trust Bar Counter (scrub-driven, bidirectional) ---
+    document.querySelectorAll('.trust-number').forEach(function(el) {
+      var target = parseInt(el.dataset.count);
+      var obj = { val: 0 };
+      gsap.to(obj, {
+        val: target,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.trust-bar',
+          start: 'top 88%',
+          end: 'top 40%',
+          scrub: 0.6
+        },
+        onUpdate: function() { el.textContent = Math.round(obj.val); }
+      });
+    });
 
-    // Glow pulses
-    gsap.to('.cta-button', { boxShadow: '0 0 60px rgba(16, 185, 129, 0.4)', duration: 1.5, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-    gsap.to('.hero-cta', { boxShadow: '0 0 50px rgba(16, 185, 129, 0.35)', duration: 1.5, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-    gsap.to('.cta-orb', { scale: 1.2, opacity: 0.4, duration: 4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    gsap.from('.trust-bar', {
+      scrollTrigger: { trigger: '.trust-bar', start: 'top 90%', end: 'top 50%', scrub: 0.8 },
+      opacity: 0, y: 40
+    });
+
+    // --- Section 4: Who ---
+    scrubSection('#who', 'top 90%', 'top 30%', function(tl) {
+      tl.from('#who .section-label', { opacity: 0, x: -30 }, 0)
+        .from('#who .section-title', { opacity: 0, y: 50 }, 0.05)
+        .from('.who-intro', { opacity: 0, y: 30 }, 0.1)
+        .from('.agent-card', { opacity: 0, y: 40, stagger: 0.05 }, 0.15)
+        .from('.who-note', { opacity: 0, y: 30 }, 0.4);
+    });
+
+    // --- Section 5: How ---
+    scrubSection('#how', 'top 88%', 'top 25%', function(tl) {
+      tl.from('#how .section-label', { opacity: 0, x: -30 }, 0)
+        .from('#how .section-title', { opacity: 0, y: 50 }, 0.05)
+        .from('.step-card', { opacity: 0, y: 60, scale: 0.92, stagger: 0.12 }, 0.1)
+        .from('.step-note', { opacity: 0, y: 30 }, 0.45);
+    });
+
+    // --- Section 6: Demo ---
+    scrubSection('#demo', 'top 90%', 'top 40%', function(tl) {
+      tl.from('#demo .section-label', { opacity: 0, x: -30 }, 0)
+        .from('#demo .section-title', { opacity: 0, y: 50 }, 0.05)
+        .from('#demo .section-desc', { opacity: 0, y: 30 }, 0.1)
+        .from('.demo-terminal', { opacity: 0, y: 60, scale: 0.96 }, 0.15)
+        .from('.demo-controls', { opacity: 0, y: 20 }, 0.25);
+    });
+
+    // --- Section 7: Proof ---
+    scrubSection('#proof', 'top 90%', 'top 25%', function(tl) {
+      tl.from('#proof .section-label', { opacity: 0, x: -30 }, 0)
+        .from('#proof .section-title', { opacity: 0, y: 50 }, 0.05)
+        .from('#proof .section-desc', { opacity: 0, y: 30 }, 0.1)
+        .from('.proof-card', { opacity: 0, y: 60, stagger: 0.1 }, 0.15);
+    });
+
+    // --- Section 8: Pricing ---
+    scrubSection('#pricing', 'top 90%', 'top 25%', function(tl) {
+      tl.from('#pricing .section-label', { opacity: 0, x: -30 }, 0)
+        .from('#pricing .section-title', { opacity: 0, y: 50 }, 0.05)
+        .from('#pricing .section-desc', { opacity: 0, y: 30 }, 0.1)
+        .from('.pricing-card', { opacity: 0, y: 60, stagger: 0.12 }, 0.15)
+        .from('.pricing-guarantee', { opacity: 0, y: 30 }, 0.35);
+    });
+
+    // --- Section 9: FAQ ---
+    scrubSection('#faq', 'top 90%', 'top 30%', function(tl) {
+      tl.from('#faq .section-label', { opacity: 0, x: -30 }, 0)
+        .from('#faq .section-title', { opacity: 0, y: 50 }, 0.05)
+        .from('.faq-item', { opacity: 0, y: 30, stagger: 0.06 }, 0.1);
+    });
+
+    // --- Section 10: CTA Final ---
+    scrubSection('#cta-final', 'top 85%', 'top 35%', function(tl) {
+      tl.from('.cta-wrapper', { opacity: 0, y: 60, scale: 0.97 }, 0)
+        .from('.cta-headline', { opacity: 0, y: 40 }, 0.1)
+        .from('.cta-sub', { opacity: 0, y: 30 }, 0.15)
+        .from('.cta-button', { opacity: 0, y: 20, scale: 0.9 }, 0.2);
+    });
+
+    // --- Ambient Glow Pulses (time-based, not scrub) ---
+    gsap.to('.cta-button', {
+      boxShadow: '0 0 60px rgba(16, 185, 129, 0.4)',
+      duration: 2, repeat: -1, yoyo: true, ease: 'sine.inOut'
+    });
+    gsap.to('.btn-primary', {
+      boxShadow: '0 0 50px rgba(16, 185, 129, 0.35)',
+      duration: 2, repeat: -1, yoyo: true, ease: 'sine.inOut'
+    });
+    gsap.to('.cta-orb', {
+      scale: 1.3, opacity: 0.5,
+      duration: 5, repeat: -1, yoyo: true, ease: 'sine.inOut'
+    });
+
+    // --- Kinetic Typography (hover weight shift on hero) ---
+    document.querySelectorAll('.kinetic-word').forEach(function(word) {
+      word.addEventListener('mouseenter', function() {
+        word.style.fontWeight = '900';
+        word.style.letterSpacing = '0.02em';
+      });
+      word.addEventListener('mouseleave', function() {
+        word.style.fontWeight = '';
+        word.style.letterSpacing = '';
+      });
+    });
+
+    // --- Section Divider Glow on Scroll ---
+    document.querySelectorAll('.section-divider').forEach(function(div) {
+      gsap.to(div, {
+        scrollTrigger: { trigger: div, start: 'top 80%', end: 'top 20%', scrub: 1 },
+        background: 'linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.25), transparent)',
+      });
+    });
 
   })();
   </script>
