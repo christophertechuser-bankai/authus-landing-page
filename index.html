@@ -1239,15 +1239,15 @@
         <!-- Trust Bar -->
         <div class="trust-bar">
           <div class="trust-item">
-            <div class="trust-number" data-count="84" aria-label="84 tribunais">0</div>
+            <div class="trust-number" aria-label="84 tribunais">84</div>
             <div class="trust-label">Tribunais</div>
           </div>
           <div class="trust-item">
-            <div class="trust-number" data-count="12" aria-label="12 agentes">0</div>
+            <div class="trust-number" aria-label="12 agentes">12</div>
             <div class="trust-label">Agentes</div>
           </div>
           <div class="trust-item">
-            <div class="trust-number" data-count="32" aria-label="32 pontos de revisão">0</div>
+            <div class="trust-number" aria-label="32 pontos de revisão">32</div>
             <div class="trust-label">Pontos de revisão</div>
           </div>
         </div>
@@ -1395,7 +1395,8 @@
             <p class="pricing-price" style="margin-bottom: 0;">R$ 997<span class="pricing-price-suffix"> em até 12x (Setup)</span></p>
             <p class="pricing-period" style="font-size: 1.125rem; font-weight: 500; color: var(--text-2); margin-top: 0.5rem; margin-bottom: 2rem;">+ R$ 97 / mês (taxa de manutenção)</p>
             <ul class="pricing-features">
-              <li>Setup VIP de 2h30 (Instalação e treinamento na sua máquina)</li>
+              <li>Setup VIP (Instalação e treinamento na sua máquina)</li>
+              <li>Biblioteca com +500 prompts jurídicos avançados</li>
               <li>12 agentes trabalhando na sua própria conta Claude/GPT</li>
               <li>Pesquisa em 84 tribunais + Geração + Revisão 32 pontos</li>
             </ul>
@@ -1830,41 +1831,7 @@
         .from('.solution-card', { opacity: 0, y: 60, stagger: 0.08 }, 0.15);
     });
 
-    // --- Trust Bar Counter ---
-    var countersStarted = false;
-    function startCounters() {
-      if (countersStarted) return;
-      countersStarted = true;
-      document.querySelectorAll('.trust-number').forEach(function(el) {
-        var target = parseInt(el.dataset.count);
-        var obj = { val: 0 };
-        gsap.to(obj, {
-          val: target,
-          duration: 2.5,
-          ease: 'power3.out',
-          onUpdate: function() { el.textContent = Math.round(obj.val); }
-        });
-      });
-    }
 
-    ScrollTrigger.create({
-      trigger: '.trust-bar',
-      start: 'top 95%',
-      onEnter: startCounters
-    });
-
-    // Fallback se a tela for gigante e o ScrollTrigger não perceber no load
-    setTimeout(function() {
-      var tb = document.querySelector('.trust-bar');
-      if (tb && tb.getBoundingClientRect().top < window.innerHeight) {
-        startCounters();
-      }
-    }, 500);
-
-    gsap.from('.trust-bar', {
-      scrollTrigger: { trigger: '.trust-bar', start: 'top 90%', end: 'top 50%', scrub: 0.8 },
-      opacity: 0, y: 40
-    });
 
     // --- Section 4: Who ---
     scrubSection('#who', 'top 90%', 'top 30%', function(tl) {
