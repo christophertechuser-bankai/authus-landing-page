@@ -1375,54 +1375,7 @@
 
     <div class="section-divider"></div>
 
-    <!-- ====== SECTION 7: PROVA SOCIAL ====== -->
-    <section id="proof" class="section" aria-labelledby="proof-title">
-      <div class="container">
-        <div class="proof-header">
-          <p class="section-label">Quem já usa</p>
-          <h2 class="section-title" id="proof-title">O advogado que seus<br>clientes merecem</h2>
-          <p class="section-desc">Advogados que recuperaram tempo para fazer o que realmente importa: advogar.</p>
-        </div>
 
-        <div class="proof-grid">
-          <div class="glass-card proof-card">
-            <p class="proof-quote">Eu gastava 4 horas por caso em pesquisa de jurisprudência. Agora faço em 15 minutos e os precedentes são mais relevantes do que os que eu encontrava manualmente.</p>
-            <div class="proof-author">
-              <div class="proof-avatar">RM</div>
-              <div>
-                <p class="proof-name">Dra. Renata M.</p>
-                <p class="proof-meta">Direito do consumidor, Belo Horizonte</p>
-                <div class="proof-result">Economia de 3h por caso</div>
-              </div>
-            </div>
-          </div>
-          <div class="glass-card proof-card">
-            <p class="proof-quote">Meu escritório tem 3 advogados e volume alto de previdenciário. O Authus nos devolveu a capacidade de aceitar novos casos sem contratar mais gente.</p>
-            <div class="proof-author">
-              <div class="proof-avatar">CS</div>
-              <div>
-                <p class="proof-name">Dr. Carlos S.</p>
-                <p class="proof-meta">Previdenciário, Curitiba</p>
-                <div class="proof-result">+40% de casos por mês</div>
-              </div>
-            </div>
-          </div>
-          <div class="glass-card proof-card">
-            <p class="proof-quote">A revisão em 32 pontos pegou erros que eu teria deixado passar. Uma citação errada de artigo, uma inconsistência entre pedido e fundamentação. Isso é segurança.</p>
-            <div class="proof-author">
-              <div class="proof-avatar">AF</div>
-              <div>
-                <p class="proof-name">Dra. Amanda F.</p>
-                <p class="proof-meta">Cível, São Paulo</p>
-                <div class="proof-result">Zero erros de citação</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
 
     <!-- ====== SECTION 8: PRICING ====== -->
     <section id="pricing" class="section" aria-labelledby="pricing-title">
@@ -1872,18 +1825,17 @@
         .from('.solution-card', { opacity: 0, y: 60, stagger: 0.08 }, 0.15);
     });
 
-    // --- Trust Bar Counter (scrub-driven, bidirectional) ---
+    // --- Trust Bar Counter ---
     document.querySelectorAll('.trust-number').forEach(function(el) {
       var target = parseInt(el.dataset.count);
       var obj = { val: 0 };
       gsap.to(obj, {
         val: target,
-        ease: 'none',
+        duration: 2,
+        ease: 'power2.out',
         scrollTrigger: {
           trigger: '.trust-bar',
-          start: 'top 88%',
-          end: 'top 40%',
-          scrub: 0.6
+          start: 'top 90%'
         },
         onUpdate: function() { el.textContent = Math.round(obj.val); }
       });
@@ -1920,13 +1872,7 @@
         .from('.demo-controls', { opacity: 0, y: 20 }, 0.25);
     });
 
-    // --- Section 7: Proof ---
-    scrubSection('#proof', 'top 90%', 'top 25%', function(tl) {
-      tl.from('#proof .section-label', { opacity: 0, x: -30 }, 0)
-        .from('#proof .section-title', { opacity: 0, y: 50 }, 0.05)
-        .from('#proof .section-desc', { opacity: 0, y: 30 }, 0.1)
-        .from('.proof-card', { opacity: 0, y: 60, stagger: 0.1 }, 0.15);
-    });
+
 
     // --- Section 8: Pricing ---
     scrubSection('#pricing', 'top 90%', 'top 25%', function(tl) {
