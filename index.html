@@ -1832,24 +1832,34 @@
 
     // --- Trust Bar Counter ---
     var countersStarted = false;
+    function startCounters() {
+      if (countersStarted) return;
+      countersStarted = true;
+      document.querySelectorAll('.trust-number').forEach(function(el) {
+        var target = parseInt(el.dataset.count);
+        var obj = { val: 0 };
+        gsap.to(obj, {
+          val: target,
+          duration: 2.5,
+          ease: 'power3.out',
+          onUpdate: function() { el.textContent = Math.round(obj.val); }
+        });
+      });
+    }
+
     ScrollTrigger.create({
       trigger: '.trust-bar',
       start: 'top 95%',
-      onEnter: function() {
-        if (countersStarted) return;
-        countersStarted = true;
-        document.querySelectorAll('.trust-number').forEach(function(el) {
-          var target = parseInt(el.dataset.count);
-          var obj = { val: 0 };
-          gsap.to(obj, {
-            val: target,
-            duration: 2.5,
-            ease: 'power3.out',
-            onUpdate: function() { el.textContent = Math.round(obj.val); }
-          });
-        });
-      }
+      onEnter: startCounters
     });
+
+    // Fallback se a tela for gigante e o ScrollTrigger não perceber no load
+    setTimeout(function() {
+      var tb = document.querySelector('.trust-bar');
+      if (tb && tb.getBoundingClientRect().top < window.innerHeight) {
+        startCounters();
+      }
+    }, 500);
 
     gsap.from('.trust-bar', {
       scrollTrigger: { trigger: '.trust-bar', start: 'top 90%', end: 'top 50%', scrub: 0.8 },
