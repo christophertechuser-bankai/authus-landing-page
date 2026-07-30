@@ -1825,27 +1825,46 @@
         .from('.solution-card', { opacity: 0, y: 60, stagger: 0.08 }, 0.15);
     });
 
-    // --- Trust Bar Counter (triggers once on scroll into view) ---
-    document.querySelectorAll('.trust-number').forEach(function(el) {
-      var target = parseInt(el.dataset.count);
-      var obj = { val: 0 };
-      gsap.to(obj, {
-        val: target,
-        duration: 1.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.trust-bar',
-          start: 'top 92%',
-          once: true
-        },
-        onUpdate: function() { el.textContent = Math.round(obj.val); }
-      });
-    });
+    // --- Trust Bar Counter (IntersectionObserver — works on all viewports) ---
+    (function() {
+      var trustBar = document.querySelector('.trust-bar');
+      if (!trustBar) return;
+      var counted = false;
 
-    gsap.from('.trust-bar', {
-      scrollTrigger: { trigger: '.trust-bar', start: 'top 92%', once: true },
-      opacity: 0, y: 40, duration: 1
-    });
+      function animateCounters() {
+        if (counted) return;
+        counted = true;
+        document.querySelectorAll('.trust-number').forEach(function(el) {
+          var target = parseInt(el.dataset.count);
+          var start = performance.now();
+          var duration = 1800;
+          function step(now) {
+            var progress = Math.min((now - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(target * eased);
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+        trustBar.style.opacity = '1';
+        trustBar.style.transform = 'translateY(0)';
+      }
+
+      trustBar.style.opacity = '0';
+      trustBar.style.transform = 'translateY(40px)';
+      trustBar.style.transition = 'opacity 1s ease, transform 1s ease';
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            animateCounters();
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.1 });
+
+      observer.observe(trustBar);
+    })();
 
     // --- Section 4: Who ---
     scrubSection('#who', 'top 90%', 'top 30%', function(tl) {
