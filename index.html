@@ -410,14 +410,29 @@
     .trust-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      gap: 1rem;
       margin-top: 4rem;
-      padding: 2.5rem 2rem;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.04), rgba(16, 185, 129, 0.01));
-      border: 1px solid rgba(16, 185, 129, 0.08);
-      border-radius: var(--radius-lg);
+      padding: 0;
+      background: none;
+      border: none;
     }
-    .trust-item { text-align: center; }
+    .trust-item {
+      text-align: center;
+      padding: 2rem 1.25rem;
+      background: linear-gradient(160deg, rgba(16, 185, 129, 0.06), rgba(16, 185, 129, 0.01));
+      border: 1px solid rgba(16, 185, 129, 0.1);
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+    }
+    .trust-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      opacity: 0.5;
+    }
     .trust-number {
       font-family: var(--font-display);
       font-size: clamp(2.5rem, 4vw, 3.5rem);
@@ -425,6 +440,15 @@
       color: var(--green);
       line-height: 1;
       letter-spacing: -0.03em;
+    }
+    .trust-desc {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 0.5rem;
+      line-height: 1.4;
+      max-width: 180px;
+      margin-left: auto;
+      margin-right: auto;
     }
     .trust-label {
       font-size: 0.72rem;
@@ -1238,16 +1262,19 @@
         <!-- Trust Bar -->
         <div class="trust-bar">
           <div class="trust-item">
-            <div class="trust-number" data-count="84" aria-label="84 tribunais">0</div>
+            <div class="trust-number">84</div>
             <div class="trust-label">Tribunais</div>
+            <div class="trust-desc">Dados oficiais do DataJud/CNJ. Não inventa jurisprudência.</div>
           </div>
           <div class="trust-item">
-            <div class="trust-number" data-count="12" aria-label="12 agentes">0</div>
+            <div class="trust-number">12</div>
             <div class="trust-label">Agentes</div>
+            <div class="trust-desc">Cada um com papel definido. Do caso ao relatório, em sequência.</div>
           </div>
           <div class="trust-item">
-            <div class="trust-number" data-count="32" aria-label="32 pontos de revisão">0</div>
+            <div class="trust-number">32</div>
             <div class="trust-label">Pontos de revisão</div>
+            <div class="trust-desc">Antes de entregar, verifica citações, coerência, formato e prazos.</div>
           </div>
         </div>
       </div>
@@ -1825,46 +1852,7 @@
         .from('.solution-card', { opacity: 0, y: 60, stagger: 0.08 }, 0.15);
     });
 
-    // --- Trust Bar Counter (IntersectionObserver — works on all viewports) ---
-    (function() {
-      var trustBar = document.querySelector('.trust-bar');
-      if (!trustBar) return;
-      var counted = false;
-
-      function animateCounters() {
-        if (counted) return;
-        counted = true;
-        document.querySelectorAll('.trust-number').forEach(function(el) {
-          var target = parseInt(el.dataset.count);
-          var start = performance.now();
-          var duration = 1800;
-          function step(now) {
-            var progress = Math.min((now - start) / duration, 1);
-            var eased = 1 - Math.pow(1 - progress, 3);
-            el.textContent = Math.round(target * eased);
-            if (progress < 1) requestAnimationFrame(step);
-          }
-          requestAnimationFrame(step);
-        });
-        trustBar.style.opacity = '1';
-        trustBar.style.transform = 'translateY(0)';
-      }
-
-      trustBar.style.opacity = '0';
-      trustBar.style.transform = 'translateY(40px)';
-      trustBar.style.transition = 'opacity 1s ease, transform 1s ease';
-
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            animateCounters();
-            observer.disconnect();
-          }
-        });
-      }, { threshold: 0.1 });
-
-      observer.observe(trustBar);
-    })();
+    // --- Trust Bar (static numbers, no animation needed) ---
 
     // --- Section 4: Who ---
     scrubSection('#who', 'top 90%', 'top 30%', function(tl) {
